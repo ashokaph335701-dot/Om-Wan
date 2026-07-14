@@ -27,8 +27,7 @@ export default function PricingPlans() {
         "Free access to Meditation Center",
         "Access to Agroforestry Courses",
         "Discount on Music Festival"
-      ],
-      featured: true
+      ]
     },
     {
       name: "Forest Plan",
@@ -57,7 +56,6 @@ export default function PricingPlans() {
           <motion.div 
             key={plan.name}
             className="card"
-            style={plan.featured ? { borderColor: 'var(--forest-green)' } : {}}
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
