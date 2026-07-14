@@ -49,7 +49,7 @@ export default function Calculator() {
   const [selectedTree, setSelectedTree] = useState("Khejri");
   const [treeCount, setTreeCount] = useState(100);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [hoveredRing, setHoveredRing] = useState(null); // 'investor' or 'reinvested'
+  const [showTooltip, setShowTooltip] = useState(false);
   
   const currentTree = treeData[selectedTree];
   
@@ -65,12 +65,6 @@ export default function Calculator() {
     else setTreeCount(num);
   };
 
-  // Ring Variables
-  const radius = 30;
-  const circumference = 2 * Math.PI * radius;
-  const investorDash = circumference * 0.7;
-  const reinvestedDash = circumference * 0.3;
-
   return (
     <section id="calculator" className="section-padding" style={{ background: '#f8fafc', position: 'relative', overflow: 'hidden' }}>
       
@@ -82,7 +76,7 @@ export default function Calculator() {
           <div style={{ marginBottom: '2.5rem' }}>
             <h2 style={{ fontSize: '2.5rem', marginBottom: '0.2rem', color: 'var(--text-dark)', fontWeight: '800' }}>Investment Calculator</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🌿 <span>Estimated annual returns are paid every year for <strong>25 years</strong>.</span>
+              🌿 <span>Annual returns are estimated to be paid every year for <strong>25 years</strong>.</span>
             </p>
           </div>
 
@@ -156,89 +150,30 @@ export default function Calculator() {
           {/* Results Area */}
           <div className="compact-results-area">
             
-            <div className="compact-result-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
-              <motion.div className="compact-card highlight-card" style={{ gridColumn: '1 / -1' }} whileHover={{ y: -3 }}>
+            <div className="compact-result-grid">
+              <motion.div className="compact-card highlight-card" whileHover={{ y: -3 }}>
                 <div className="card-label">Total Investment</div>
                 <div className="card-value"><AnimatedNum value={totalInvestment} prefix="₹" /></div>
               </motion.div>
 
               <motion.div className="compact-card" whileHover={{ y: -3 }}>
-                <div className="card-label">Estimated Annual Income</div>
+                <div className="card-label">Total Estimated Annual Income (100%)</div>
+                <div className="card-value"><AnimatedNum value={totalAnnualReturn} prefix="₹" /></div>
+              </motion.div>
+
+              <motion.div className="compact-card" whileHover={{ y: -3 }}>
+                <div className="card-label">Your Estimated Annual Income (70%)</div>
                 <div className="card-value" style={{ color: 'var(--forest-green)' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
               </motion.div>
-              
+
               <motion.div className="compact-card" whileHover={{ y: -3 }}>
-                <div className="card-label">Estimated Lifetime Return</div>
-                <div className="card-value" style={{ color: 'var(--text-dark)' }}><AnimatedNum value={lifetimeReturn} prefix="₹" /></div>
+                <div className="card-label">Estimated Lifetime Return (Your 70% Share for 25 Yrs)</div>
+                <div className="card-value"><AnimatedNum value={lifetimeReturn} prefix="₹" /></div>
               </motion.div>
             </div>
 
-            {/* Revenue Split Ring Inline */}
-            <div className="compact-split-visual">
-              <div className="ring-wrapper-tiny">
-                <svg width="70" height="70" viewBox="0 0 70 70" className="income-ring">
-                  {/* Reinvested Circle */}
-                  <circle
-                    cx="35" cy="35" r={radius}
-                    fill="none" stroke="#E5E7EB" strokeWidth="6"
-                    strokeDasharray={`${reinvestedDash} ${circumference}`}
-                    strokeDashoffset={-investorDash}
-                    strokeLinecap="round"
-                    onMouseEnter={() => setHoveredRing('reinvested')}
-                    onMouseLeave={() => setHoveredRing(null)}
-                    style={{ cursor: 'help', transition: 'stroke-opacity 0.3s ease' }}
-                    strokeOpacity={hoveredRing === 'investor' ? 0.3 : 1}
-                  />
-                  {/* Investor Circle */}
-                  <circle
-                    cx="35" cy="35" r={radius}
-                    fill="none" stroke="var(--forest-green)" strokeWidth="6"
-                    strokeDasharray={`${investorDash} ${circumference}`}
-                    strokeLinecap="round"
-                    onMouseEnter={() => setHoveredRing('investor')}
-                    onMouseLeave={() => setHoveredRing(null)}
-                    style={{ cursor: 'help', transition: 'stroke-opacity 0.3s ease' }}
-                    strokeOpacity={hoveredRing === 'reinvested' ? 0.3 : 1}
-                  />
-                </svg>
-                <AnimatePresence mode="wait">
-                  {hoveredRing && (
-                    <motion.div 
-                      key={hoveredRing}
-                      className="minimal-tooltip"
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 5 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      {hoveredRing === 'investor' 
-                        ? <span><strong>Investor:</strong> Receives 70% of the annual income.</span>
-                        : <span><strong>Tree Care & Conservation:</strong> 30% is reinvested into monitoring, maintenance, protection, and biodiversity conservation.</span>
-                      }
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              <div className="compact-split-labels">
-                <div 
-                  className="split-label small" 
-                  onMouseEnter={() => setHoveredRing('investor')} 
-                  onMouseLeave={() => setHoveredRing(null)} 
-                  style={{ cursor: 'help', opacity: hoveredRing === 'reinvested' ? 0.4 : 1, transition: 'opacity 0.2s' }}
-                >
-                  <div className="dot" style={{ background: 'var(--forest-green)' }}></div>
-                  Investor
-                </div>
-                <div 
-                  className="split-label small" 
-                  onMouseEnter={() => setHoveredRing('reinvested')} 
-                  onMouseLeave={() => setHoveredRing(null)} 
-                  style={{ cursor: 'help', opacity: hoveredRing === 'investor' ? 0.4 : 1, transition: 'opacity 0.2s' }}
-                >
-                  <div className="dot" style={{ background: '#E5E7EB' }}></div>
-                  Tree Care & Conservation
-                </div>
-              </div>
+            <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'white', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.04)', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+              🌿 <em>The total annual income generated by your trees is shared according to the ownership model: <strong>70% is paid to the investor</strong>, while <strong>30% is reinvested by Om Wan into tree care, monitoring, protection, and biodiversity conservation</strong>, ensuring healthy trees and sustainable long-term returns.</em>
             </div>
 
           </div>
@@ -252,7 +187,7 @@ export default function Calculator() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
                 className="animated-tree-container"
               >
                 {/* Time-Lapse Tree Image */}
@@ -260,12 +195,7 @@ export default function Calculator() {
                      <img 
                        src={currentTree.image} 
                        alt={currentTree.name} 
-                       style={{ 
-                         width: '100%', 
-                         height: '100%', 
-                         objectFit: 'contain', 
-                         mixBlendMode: 'multiply'
-                       }} 
+                       style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} 
                      />
                 </div>
               </motion.div>

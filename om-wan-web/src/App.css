@@ -370,59 +370,7 @@
   color: var(--text-dark);
 }
 
-/* Split Visual Inline */
-.compact-split-visual {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-light);
-}
-.ring-wrapper-tiny {
-  position: relative;
-  width: 70px;
-  height: 70px;
-}
-.ring-wrapper-tiny svg {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
-.minimal-tooltip {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-dark);
-  color: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  width: 320px;
-  text-align: center;
-  z-index: 100;
-  margin-top: 0.5rem;
-  pointer-events: none;
-  line-height: 1.4;
-}
-.compact-split-labels {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.split-label.small {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-dark);
-  font-weight: 500;
-}
-.split-label .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
+
 
 /* Time Lapse Animation Scene */
 .animated-tree-container {
@@ -434,12 +382,11 @@
   justify-content: center;
 }
 .tree-time-lapse {
-  animation: timeLapseGrowth 12s ease-in-out infinite;
+  animation: timeLapseGrowth 15s ease-in-out infinite;
   transform-origin: bottom center;
 }
 @keyframes timeLapseGrowth {
-  0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
-  25% { transform: scale(1.01) rotate(0.5deg); filter: brightness(1.05); }
-  50% { transform: scale(1.02) rotate(0deg); filter: brightness(1.1); }
-  75% { transform: scale(1.01) rotate(-0.5deg); filter: brightness(1.05); }
+  0% { transform: scale(1) scaleX(1) scaleY(1); }
+  50% { transform: scale(1.02) scaleX(1.03) scaleY(1.04); }
+  100% { transform: scale(1) scaleX(1) scaleY(1); }
 }
