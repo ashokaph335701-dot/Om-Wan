@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Wallet } from 'lucide-react';
+import { ChevronDown, Info } from 'lucide-react';
 
 // Custom CountUp Hook
 function useCountUp(endValue, duration = 800) {
@@ -49,12 +49,14 @@ export default function Calculator() {
   const [selectedTree, setSelectedTree] = useState("Khejri");
   const [treeCount, setTreeCount] = useState(50);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   
   const currentTree = treeData[selectedTree];
   
   const totalInvestment = currentTree.cost * treeCount;
   const totalAnnualReturn = currentTree.annualReturn * treeCount;
   const investorAnnualIncome = Math.round(totalAnnualReturn * 0.7);
+  const lifetimeReturn = investorAnnualIncome * 25;
 
   const handleTreeCountChange = (val) => {
     const num = parseInt(val) || 0;
@@ -63,63 +65,58 @@ export default function Calculator() {
     else setTreeCount(num);
   };
 
+  // Ring Variables
+  const radius = 30;
+  const circumference = 2 * Math.PI * radius;
+  const investorDash = circumference * 0.7;
+  const reinvestedDash = circumference * 0.3;
+
   return (
     <section id="calculator" className="section-padding" style={{ background: '#f8fafc', position: 'relative', overflow: 'hidden' }}>
       
-      <div className="minimal-calc-wrapper">
+      <div className="compact-calc-wrapper">
         
-        {/* Header Section */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem', position: 'relative', zIndex: 10 }}>
-          <h2 style={{ fontSize: '3rem', marginBottom: '0.5rem', color: 'var(--text-dark)', fontWeight: '800' }}>Investment Calculator</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-            🌿 <span>Estimated annual returns are paid every year for <strong>25 years</strong>.</span>
-          </p>
-        </div>
-
-        {/* Top Section: Inputs & Visuals */}
-        <div className="minimal-top-grid">
+        {/* Left Column: Content */}
+        <div className="calc-left-col">
           
-          {/* Inputs Column */}
-          <div className="minimal-inputs">
-            
+          <div style={{ marginBottom: '2.5rem' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '0.2rem', color: 'var(--text-dark)', fontWeight: '800' }}>Investment Calculator</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              🌿 <span>Annual returns are estimated to be paid every year for <strong>25 years</strong>.</span>
+            </p>
+          </div>
+
+          <div className="compact-inputs-row">
             {/* Custom Dropdown */}
-            <div className="input-group">
+            <div className="compact-input-group" style={{ flex: 1 }}>
               <label className="minimal-label">Select Tree</label>
               <div className="custom-dropdown-container">
                 <div 
-                  className="custom-dropdown-header"
+                  className="custom-dropdown-header compact"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <div style={{ width: '40px', height: '40px', overflow: 'hidden' }}>
-                      <img src={currentTree.image} alt={currentTree.name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
-                    </div>
-                    <span style={{ fontWeight: '600', fontSize: '1.2rem', color: 'var(--text-dark)' }}>{currentTree.name}</span>
-                  </div>
+                  <span style={{ fontWeight: '600', fontSize: '1rem', color: 'var(--text-dark)' }}>{currentTree.name}</span>
                   <motion.div animate={{ rotate: dropdownOpen ? 180 : 0 }}>
-                    <ChevronDown size={24} color="var(--text-muted)" />
+                    <ChevronDown size={18} color="var(--text-muted)" />
                   </motion.div>
                 </div>
 
                 <AnimatePresence>
                   {dropdownOpen && (
                     <motion.div 
-                      className="custom-dropdown-list"
-                      initial={{ opacity: 0, y: -10 }}
+                      className="custom-dropdown-list compact"
+                      initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      transition={{ duration: 0.15 }}
                     >
                       {Object.keys(treeData).map(key => (
                         <div 
                           key={key}
-                          className={`dropdown-item ${selectedTree === key ? 'active' : ''}`}
+                          className={`dropdown-item compact ${selectedTree === key ? 'active' : ''}`}
                           onClick={() => { setSelectedTree(key); setDropdownOpen(false); }}
                         >
-                          <div style={{ width: '32px', height: '32px', overflow: 'hidden' }}>
-                            <img src={treeData[key].image} alt={treeData[key].name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
-                          </div>
-                          <span style={{ fontSize: '1.1rem' }}>{treeData[key].name}</span>
+                          <span style={{ fontSize: '1rem' }}>{treeData[key].name}</span>
                         </div>
                       ))}
                     </motion.div>
@@ -129,19 +126,19 @@ export default function Calculator() {
             </div>
 
             {/* Quantity Slider */}
-            <div className="input-group" style={{ marginTop: '2.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
-                <label className="minimal-label">Number of Trees</label>
+            <div className="compact-input-group" style={{ flex: 1.5 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <label className="minimal-label" style={{ marginBottom: 0 }}>Number of Trees</label>
                 <input 
                   type="number" 
                   min="1" max="1000" 
                   value={treeCount}
                   onChange={(e) => handleTreeCountChange(e.target.value)}
-                  className="minimal-num-input"
+                  className="minimal-num-input compact"
                 />
               </div>
               
-              <div className="minimal-slider-container">
+              <div className="minimal-slider-container" style={{ marginTop: '0.5rem' }}>
                 <input 
                   type="range" 
                   min="1" max="1000" 
@@ -154,64 +151,100 @@ export default function Calculator() {
                 />
               </div>
             </div>
-
           </div>
 
-          {/* Realistic Image Visualization Column */}
-          <div className="minimal-visual-scene">
-            <AnimatePresence mode="wait">
+          {/* Results Area */}
+          <div className="compact-results-area">
+            
+            <div className="compact-result-grid">
+              <motion.div className="compact-card highlight-card" whileHover={{ y: -3 }}>
+                <div className="card-label">Total Investment</div>
+                <div className="card-value"><AnimatedNum value={totalInvestment} prefix="₹" /></div>
+              </motion.div>
+
+              <motion.div className="compact-card" whileHover={{ y: -3 }}>
+                <div className="card-label">Estimated Annual Income</div>
+                <div className="card-value" style={{ color: 'var(--forest-green)' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
+              </motion.div>
+
+              <motion.div className="compact-card" style={{ gridColumn: '1 / -1' }} whileHover={{ y: -3 }}>
+                <div className="card-label">Estimated Lifetime Return (25 Yrs)</div>
+                <div className="card-value"><AnimatedNum value={lifetimeReturn} prefix="₹" /></div>
+              </motion.div>
+            </div>
+
+            {/* Revenue Split Ring Inline */}
+            <div className="compact-split-visual">
+              <div className="ring-wrapper-tiny">
+                <svg width="70" height="70" viewBox="0 0 70 70" className="income-ring">
+                  <circle
+                    cx="35" cy="35" r={radius}
+                    fill="none" stroke="#E5E7EB" strokeWidth="6"
+                    strokeDasharray={`${reinvestedDash} ${circumference}`}
+                    strokeDashoffset={-investorDash}
+                    strokeLinecap="round"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    style={{ cursor: 'help' }}
+                  />
+                  <circle
+                    cx="35" cy="35" r={radius}
+                    fill="none" stroke="var(--forest-green)" strokeWidth="6"
+                    strokeDasharray={`${investorDash} ${circumference}`}
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <AnimatePresence>
+                  {showTooltip && (
+                    <motion.div 
+                      className="minimal-tooltip"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                    >
+                      30% of revenue is reinvested to protect and maintain your trees.
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <div className="compact-split-labels">
+                <div className="split-label small">
+                  <div className="dot" style={{ background: 'var(--forest-green)' }}></div>
+                  70% Investor
+                </div>
+                <div className="split-label small" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)} style={{ cursor: 'help' }}>
+                  <div className="dot" style={{ background: '#E5E7EB' }}></div>
+                  30% Reinvested into Tree Care <Info size={12} color="var(--text-muted)"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right Column: Visual */}
+        <div className="calc-right-col">
+           <AnimatePresence mode="wait">
               <motion.div 
                 key={selectedTree}
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, filter: 'blur(10px)' }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
                 className="animated-tree-container"
               >
-                {/* Sunlight Glow Background */}
-                <div className="sunlight-glow" style={{ background: `radial-gradient(circle, ${currentTree.color}25 0%, rgba(255,255,255,0) 70%)` }}></div>
-                
-                {/* Alive Tree Container (breathing + sway) */}
-                <div className="tree-alive" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 5 }}>
+                {/* Time-Lapse Tree Image */}
+                <div className="tree-time-lapse" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                      <img 
                        src={currentTree.image} 
                        alt={currentTree.name} 
-                       style={{ width: '120%', maxWidth: '400px', height: 'auto', objectFit: 'contain', mixBlendMode: 'multiply' }} 
+                       style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} 
                      />
                 </div>
-                
-                {/* Fresh Leaves (Growth Animation) */}
-                <div className="fresh-leaf leaf-pos-1" style={{ background: currentTree.color }}></div>
-                <div className="fresh-leaf leaf-pos-2" style={{ background: currentTree.color }}></div>
-                <div className="fresh-leaf leaf-pos-3" style={{ background: currentTree.color }}></div>
-                <div className="fresh-leaf leaf-pos-4" style={{ background: currentTree.color }}></div>
               </motion.div>
             </AnimatePresence>
-          </div>
-
         </div>
 
-        {/* Bottom Section: 2 Results Cards */}
-        <div className="minimal-results-grid">
-          
-          <motion.div className="minimal-card highlight-card" whileHover={{ y: -5 }}>
-            <div className="card-icon"><Wallet size={28} color="rgba(255,255,255,0.9)" /></div>
-            <div className="card-label" style={{ color: 'rgba(255,255,255,0.9)' }}>Total Investment</div>
-            <div className="card-value" style={{ color: 'white' }}><AnimatedNum value={totalInvestment} prefix="₹" /></div>
-          </motion.div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <motion.div className="minimal-card" style={{ flexGrow: 1 }} whileHover={{ y: -5 }}>
-              <div className="card-label" style={{ color: 'var(--forest-green)', fontSize: '1.2rem' }}>Estimated Annual Income</div>
-              <div className="card-value" style={{ color: 'var(--forest-green)', fontSize: '2.5rem' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
-            </motion.div>
-            
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic', padding: '0 1rem', lineHeight: '1.4' }}>
-              🌿 *30% of the annual revenue is automatically reinvested into tree care and conservation to ensure healthy, productive trees.
-            </p>
-          </div>
-
-        </div>
       </div>
     </section>
   );
