@@ -4,7 +4,6 @@ export default function NativeTrees() {
   const trees = [
     { name: "Khejri (Prosopis cineraria)", emoji: "🌳", desc: "The 'Lifeline of the Desert', crucial for soil stability and high nutritional value." },
     { name: "Amla (Phyllanthus emblica)", emoji: "🌿", desc: "A highly valued medicinal tree rich in Vitamin C, known for boosting immunity." },
-    { name: "Ber (Ziziphus mauritiana)", emoji: "🍒", desc: "A resilient fruit-bearing tree that thrives in arid conditions with minimal water." },
     { name: "Neem (Azadirachta indica)", emoji: "🌱", desc: "Famous for its purifying and medicinal properties, excellent for pest control naturally." }
   ];
 
@@ -14,6 +13,8 @@ export default function NativeTrees() {
         <h2>Species We Plant</h2>
         <p style={{ maxWidth: '600px', margin: '0 auto' }}>
           We focus on native species perfectly adapted to the harsh desert environment of Rajasthan, ensuring biodiversity and sustainability.
+          <br /><br />
+          <em>* We are continuously exploring more native tree options.</em>
         </p>
       </div>
       
