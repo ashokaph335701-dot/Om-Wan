@@ -1,0 +1,254 @@
+/* Premium Calculator Specific Styles */
+.calculator-container {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-primary);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  padding: 4rem;
+  z-index: 1;
+}
+
+/* Background Animation */
+.calc-bg-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.calc-blob {
+  position: absolute;
+  filter: blur(80px);
+  opacity: 0.4;
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: rgba(63, 99, 65, 0.3); /* forest green */
+}
+
+.blob-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: rgba(220, 165, 71, 0.2); /* accent gold */
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, 30px) scale(1.1); }
+  100% { transform: translate(-30px, 50px) scale(0.9); }
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+/* Tree Selection Cards */
+.tree-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.tree-card {
+  background: white;
+  border: 2px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.tree-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(63, 99, 65, 0.5);
+  box-shadow: 0 15px 35px rgba(63, 99, 65, 0.15);
+}
+
+.tree-card.selected {
+  border-color: var(--forest-green);
+  box-shadow: 0 15px 35px rgba(63, 99, 65, 0.2);
+  background: linear-gradient(180deg, #ffffff 0%, #f9fdfa 100%);
+}
+
+.tree-card-check {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--forest-green);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-emoji-container {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.tree-card:hover .tree-emoji-container {
+  transform: scale(1.1) rotate(2deg);
+}
+
+/* Custom Range Slider */
+.premium-slider-container {
+  margin: 2rem 0;
+}
+
+.premium-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--border-light);
+  border-radius: 4px;
+  outline: none;
+  margin-top: 1rem;
+}
+
+.premium-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--forest-green);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.premium-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Circular Chart */
+.circular-chart {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: var(--border-light);
+  stroke-width: 3;
+}
+
+.circle-fill-investor {
+  fill: none;
+  stroke: var(--forest-green);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease-out;
+}
+
+.circle-fill-omwan {
+  fill: none;
+  stroke: var(--accent-gold);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease-out;
+}
+
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Impact Grid */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.impact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease;
+}
+
+.impact-item:hover {
+  transform: translateY(-5px);
+}
+
+.impact-icon {
+  color: var(--forest-green);
+  margin-bottom: 0.5rem;
+}
+
+/* Wealth Card */
+.wealth-card {
+  background: linear-gradient(135deg, #222 0%, #111 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  margin-top: 3rem;
+}
+
+.wealth-glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background: rgba(220, 165, 71, 0.4);
+  filter: blur(60px);
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .calculator-container {
+    padding: 2rem;
+  }
+  .tree-select-grid {
+    grid-template-columns: 1fr;
+  }
+}
