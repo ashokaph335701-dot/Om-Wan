@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Info, Wallet } from 'lucide-react';
+import { ChevronDown, Wallet } from 'lucide-react';
 
 // Custom CountUp Hook
 function useCountUp(endValue, duration = 800) {
@@ -49,15 +49,12 @@ export default function Calculator() {
   const [selectedTree, setSelectedTree] = useState("Khejri");
   const [treeCount, setTreeCount] = useState(50);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   
   const currentTree = treeData[selectedTree];
   
   const totalInvestment = currentTree.cost * treeCount;
   const totalAnnualReturn = currentTree.annualReturn * treeCount;
-  
   const investorAnnualIncome = Math.round(totalAnnualReturn * 0.7);
-  const reinvestedShare = Math.round(totalAnnualReturn * 0.3);
 
   const handleTreeCountChange = (val) => {
     const num = parseInt(val) || 0;
@@ -66,12 +63,6 @@ export default function Calculator() {
     else setTreeCount(num);
   };
 
-  // Ring Variables
-  const radius = 40;
-  const circumference = 2 * Math.PI * radius;
-  const investorDash = circumference * 0.7;
-  const reinvestedDash = circumference * 0.3;
-
   return (
     <section id="calculator" className="section-padding" style={{ background: '#f8fafc', position: 'relative', overflow: 'hidden' }}>
       
@@ -79,8 +70,8 @@ export default function Calculator() {
         
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '2rem', position: 'relative', zIndex: 10 }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: 'var(--text-dark)' }}>Investment Calculator</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <h2 style={{ fontSize: '3rem', marginBottom: '0.5rem', color: 'var(--text-dark)', fontWeight: '800' }}>Investment Calculator</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', fontStyle: 'italic', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
             🌿 <span>Estimated annual returns are paid every year for <strong>25 years</strong>.</span>
           </p>
         </div>
@@ -99,14 +90,14 @@ export default function Calculator() {
                   className="custom-dropdown-header"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden' }}>
-                      <img src={currentTree.image} alt={currentTree.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ width: '40px', height: '40px', overflow: 'hidden' }}>
+                      <img src={currentTree.image} alt={currentTree.name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
                     </div>
-                    <span style={{ fontWeight: '600', fontSize: '1.1rem' }}>{currentTree.name}</span>
+                    <span style={{ fontWeight: '600', fontSize: '1.2rem', color: 'var(--text-dark)' }}>{currentTree.name}</span>
                   </div>
                   <motion.div animate={{ rotate: dropdownOpen ? 180 : 0 }}>
-                    <ChevronDown size={20} color="var(--text-muted)" />
+                    <ChevronDown size={24} color="var(--text-muted)" />
                   </motion.div>
                 </div>
 
@@ -125,10 +116,10 @@ export default function Calculator() {
                           className={`dropdown-item ${selectedTree === key ? 'active' : ''}`}
                           onClick={() => { setSelectedTree(key); setDropdownOpen(false); }}
                         >
-                          <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden' }}>
-                            <img src={treeData[key].image} alt={treeData[key].name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div style={{ width: '32px', height: '32px', overflow: 'hidden' }}>
+                            <img src={treeData[key].image} alt={treeData[key].name} style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
                           </div>
-                          <span>{treeData[key].name}</span>
+                          <span style={{ fontSize: '1.1rem' }}>{treeData[key].name}</span>
                         </div>
                       ))}
                     </motion.div>
@@ -138,8 +129,8 @@ export default function Calculator() {
             </div>
 
             {/* Quantity Slider */}
-            <div className="input-group" style={{ marginTop: '2rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem' }}>
+            <div className="input-group" style={{ marginTop: '2.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
                 <label className="minimal-label">Number of Trees</label>
                 <input 
                   type="number" 
@@ -164,56 +155,6 @@ export default function Calculator() {
               </div>
             </div>
 
-            {/* Split visualization inline */}
-            <div className="minimal-split-visual" style={{ marginTop: '3rem' }}>
-              <div className="ring-wrapper-small">
-                <svg width="100" height="100" viewBox="0 0 100 100" className="income-ring">
-                  {/* Reinvested 30% */}
-                  <circle
-                    cx="50" cy="50" r={radius}
-                    fill="none" stroke="#E5E7EB" strokeWidth="8"
-                    strokeDasharray={`${reinvestedDash} ${circumference}`}
-                    strokeDashoffset={-investorDash}
-                    strokeLinecap="round"
-                    onMouseEnter={() => setShowTooltip(true)}
-                    onMouseLeave={() => setShowTooltip(false)}
-                    style={{ cursor: 'help' }}
-                  />
-                  {/* Investor 70% */}
-                  <circle
-                    cx="50" cy="50" r={radius}
-                    fill="none" stroke="var(--forest-green)" strokeWidth="8"
-                    strokeDasharray={`${investorDash} ${circumference}`}
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="ring-center-text">70/30</div>
-                
-                <AnimatePresence>
-                  {showTooltip && (
-                    <motion.div 
-                      className="minimal-tooltip"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                    >
-                      30% is reinvested into tree care, monitoring, protection, and biodiversity conservation to keep your trees healthy and productive.
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              <div className="split-labels">
-                <div className="split-label">
-                  <div className="dot" style={{ background: 'var(--forest-green)' }}></div>
-                  Your Annual Income (70%)
-                </div>
-                <div className="split-label" onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)} style={{ cursor: 'help' }}>
-                  <div className="dot" style={{ background: '#E5E7EB' }}></div>
-                  Reinvested into Care (30%) <Info size={14} color="var(--text-muted)"/>
-                </div>
-              </div>
-            </div>
-
           </div>
 
           {/* Realistic Image Visualization Column */}
@@ -224,53 +165,51 @@ export default function Calculator() {
                 initial={{ opacity: 0, filter: 'blur(10px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, filter: 'blur(10px)' }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 className="animated-tree-container"
               >
-                {/* Glowing Background */}
-                <div className="tree-glow" style={{ background: `radial-gradient(circle, ${currentTree.color}30 0%, rgba(255,255,255,0) 70%)` }}></div>
+                {/* Sunlight Glow Background */}
+                <div className="sunlight-glow" style={{ background: `radial-gradient(circle, ${currentTree.color}25 0%, rgba(255,255,255,0) 70%)` }}></div>
                 
-                {/* Image Sway Container */}
-                <div className="tree-sway" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <div style={{ width: '300px', height: '300px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', border: '4px solid white', position: 'relative' }}>
+                {/* Alive Tree Container (breathing + sway) */}
+                <div className="tree-alive" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 5 }}>
                      <img 
                        src={currentTree.image} 
                        alt={currentTree.name} 
-                       style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                       style={{ width: '120%', maxWidth: '400px', height: 'auto', objectFit: 'contain', mixBlendMode: 'multiply' }} 
                      />
-                  </div>
                 </div>
                 
-                {/* Floating Leaves overlay */}
-                <div className="floating-leaf leaf-1" style={{ color: currentTree.color }}>🍃</div>
-                <div className="floating-leaf leaf-2" style={{ color: currentTree.color }}>🍂</div>
-                <div className="floating-leaf leaf-3" style={{ color: currentTree.color }}>🍃</div>
+                {/* Fresh Leaves (Growth Animation) */}
+                <div className="fresh-leaf leaf-pos-1" style={{ background: currentTree.color }}></div>
+                <div className="fresh-leaf leaf-pos-2" style={{ background: currentTree.color }}></div>
+                <div className="fresh-leaf leaf-pos-3" style={{ background: currentTree.color }}></div>
+                <div className="fresh-leaf leaf-pos-4" style={{ background: currentTree.color }}></div>
               </motion.div>
             </AnimatePresence>
           </div>
 
         </div>
 
-        {/* Bottom Section: 3 Results Cards */}
-        <div className="minimal-results-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+        {/* Bottom Section: 2 Results Cards */}
+        <div className="minimal-results-grid">
           
           <motion.div className="minimal-card highlight-card" whileHover={{ y: -5 }}>
-            <div className="card-icon"><Wallet size={24} color="rgba(255,255,255,0.8)" /></div>
-            <div className="card-label">Total Investment</div>
-            <div className="card-value"><AnimatedNum value={totalInvestment} prefix="₹" /></div>
+            <div className="card-icon"><Wallet size={28} color="rgba(255,255,255,0.9)" /></div>
+            <div className="card-label" style={{ color: 'rgba(255,255,255,0.9)' }}>Total Investment</div>
+            <div className="card-value" style={{ color: 'white' }}><AnimatedNum value={totalInvestment} prefix="₹" /></div>
           </motion.div>
 
-          <motion.div className="minimal-card" whileHover={{ y: -5 }}>
-            <div className="card-label" style={{ color: 'var(--forest-green)' }}>Your Estimated Annual Income</div>
-            <div className="card-value" style={{ color: 'var(--forest-green)' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
-            <div className="card-subtext">70% Share</div>
-          </motion.div>
-
-          <motion.div className="minimal-card" whileHover={{ y: -5 }}>
-            <div className="card-label">30% Reinvested into Care</div>
-            <div className="card-value"><AnimatedNum value={reinvestedShare} prefix="₹" /></div>
-            <div className="card-subtext">For long-term conservation</div>
-          </motion.div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <motion.div className="minimal-card" style={{ flexGrow: 1 }} whileHover={{ y: -5 }}>
+              <div className="card-label" style={{ color: 'var(--forest-green)', fontSize: '1.2rem' }}>Estimated Annual Income</div>
+              <div className="card-value" style={{ color: 'var(--forest-green)', fontSize: '2.5rem' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
+            </motion.div>
+            
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic', padding: '0 1rem', lineHeight: '1.4' }}>
+              🌿 *30% of the annual revenue is automatically reinvested into tree care and conservation to ensure healthy, productive trees.
+            </p>
+          </div>
 
         </div>
       </div>
