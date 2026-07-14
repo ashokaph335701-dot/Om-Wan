@@ -157,17 +157,17 @@ export default function Calculator() {
               </motion.div>
 
               <motion.div className="compact-card" whileHover={{ y: -3 }}>
-                <div className="card-label">Total Estimated Annual Income (100%)</div>
+                <div className="card-label">Total Estimated Annual Income</div>
                 <div className="card-value"><AnimatedNum value={totalAnnualReturn} prefix="₹" /></div>
               </motion.div>
 
               <motion.div className="compact-card" whileHover={{ y: -3 }}>
-                <div className="card-label">Your Estimated Annual Income (70%)</div>
+                <div className="card-label">Your Estimated Annual Income</div>
                 <div className="card-value" style={{ color: 'var(--forest-green)' }}><AnimatedNum value={investorAnnualIncome} prefix="₹" /></div>
               </motion.div>
 
               <motion.div className="compact-card" whileHover={{ y: -3 }}>
-                <div className="card-label">Estimated Lifetime Return (Your 70% Share for 25 Yrs)</div>
+                <div className="card-label">Estimated Lifetime Return</div>
                 <div className="card-value"><AnimatedNum value={lifetimeReturn} prefix="₹" /></div>
               </motion.div>
             </div>
