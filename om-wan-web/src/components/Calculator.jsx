@@ -1,346 +1,336 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { Check, IndianRupee, Leaf, Trees, Droplet, Bird, Users, Sparkles, Sprout } from 'lucide-react';
-import './Calculator.css';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { IndianRupee, CheckCircle2, Info, Leaf } from 'lucide-react';
 
-// Animated Counter Component
-const AnimatedCounter = ({ value, prefix = "", suffix = "" }) => {
-  const [displayValue, setDisplayValue] = useState(0);
+// Custom hook for smooth number counting
+function useCountUp(endValue, duration = 800) {
+  const [value, setValue] = useState(endValue);
+  const prevEndValue = useRef(endValue);
+  const currentValRef = useRef(value);
 
   useEffect(() => {
-    let start = displayValue;
-    const end = value;
-    if (start === end) return;
-
-    let startTime = null;
-    const duration = 1000; // 1s animation
-
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
+    if (endValue === prevEndValue.current) return;
+    
+    let startTimestamp = null;
+    const startValue = currentValRef.current;
+    
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
-      // Easing function (easeOutQuart)
-      const easeProgress = 1 - Math.pow(1 - progress, 4);
-      const current = Math.floor(start + (end - start) * easeProgress);
+      // Cubic ease-out
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(startValue + (endValue - startValue) * easeOut);
       
-      setDisplayValue(current);
-
+      setValue(current);
+      currentValRef.current = current;
+      
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        window.requestAnimationFrame(step);
       }
     };
+    
+    window.requestAnimationFrame(step);
+    prevEndValue.current = endValue;
+  }, [endValue, duration]);
 
-    requestAnimationFrame(animate);
-  }, [value]);
+  return value;
+}
 
-  return <span>{prefix}{displayValue.toLocaleString('en-IN')}{suffix}</span>;
+const AnimatedNum = ({ value, prefix = "", suffix = "" }) => {
+  const animatedValue = useCountUp(value);
+  return <span>{prefix}{animatedValue.toLocaleString('en-IN')}{suffix}</span>;
+};
+
+const treeData = {
+  "Amla": {
+    name: "Amla",
+    scientific: "Phyllanthus emblica",
+    cost: 1899,
+    annualReturn: 1785,
+    startsProducing: "4-5 years",
+    productiveLife: "30+ years",
+    lifetimeMultiplier: 25,
+    icon: "🌿",
+    gradient: "linear-gradient(135deg, #dcfce7 0%, #22c55e 100%)"
+  },
+  "Khejri": {
+    name: "Khejri",
+    scientific: "Prosopis cineraria",
+    cost: 1599,
+    annualReturn: 1231,
+    startsProducing: "4-5 years",
+    productiveLife: "50+ years",
+    lifetimeMultiplier: 40,
+    icon: "🌳",
+    gradient: "linear-gradient(135deg, #fef3c7 0%, #f59e0b 100%)"
+  },
+  "Neem": {
+    name: "Neem",
+    scientific: "Azadirachta indica",
+    cost: 1499,
+    annualReturn: 750,
+    startsProducing: "5-6 years",
+    productiveLife: "100+ years",
+    lifetimeMultiplier: 80,
+    icon: "🌱",
+    gradient: "linear-gradient(135deg, #d1fae5 0%, #059669 100%)"
+  }
 };
 
 export default function Calculator() {
-  const [treeCount, setTreeCount] = useState(10);
   const [selectedTree, setSelectedTree] = useState("Khejri");
-  const [isHoveringPie, setIsHoveringPie] = useState(false);
-
-  const treeData = {
-    "Khejri": {
-      id: "Khejri",
-      name: "Khejri Tree",
-      price: 1599,
-      annualReturn: 1231,
-      productiveLife: 20,
-      startsProducing: "4-5 years",
-      emoji: "🌳"
-    },
-    "Amla": {
-      id: "Amla",
-      name: "Amla Tree",
-      price: 1899,
-      annualReturn: 1785,
-      productiveLife: 15,
-      startsProducing: "4-5 years",
-      emoji: "🌿"
-    },
-    "Neem": {
-      id: "Neem",
-      name: "Neem Tree",
-      price: 1499,
-      annualReturn: 750,
-      productiveLife: 25,
-      startsProducing: "5-6 years",
-      emoji: "🌱"
-    }
-  };
-
-  const currentData = treeData[selectedTree];
-  const totalInvestment = currentData.price * treeCount;
+  const [treeCount, setTreeCount] = useState(50);
+  const [showTooltip, setShowTooltip] = useState(false);
   
-  // Financials
-  const totalAnnualGross = currentData.annualReturn * treeCount;
-  const investorAnnual = Math.round(totalAnnualGross * 0.7);
-  const omwanAnnual = Math.round(totalAnnualGross * 0.3);
-  const estimatedLifetimeWealth = investorAnnual * currentData.productiveLife;
+  const currentTree = treeData[selectedTree];
+  
+  const totalInvestment = currentTree.cost * treeCount;
+  const totalAnnualReturn = currentTree.annualReturn * treeCount;
+  
+  // 70/30 split logic
+  const investorAnnualIncome = Math.round(totalAnnualReturn * 0.7);
+  const omWanAnnualShare = Math.round(totalAnnualReturn * 0.3);
+  
+  const lifetimeWealth = investorAnnualIncome * currentTree.lifetimeMultiplier;
 
-  // Environmental Impact
-  const carbonCapture = treeCount * 25; // kg per year
-  const waterConservation = treeCount * 1000; // liters per year
-
-  // Forest Stage
-  const getForestStage = () => {
-    if (treeCount <= 20) return { title: "Sapling Phase", icon: <Sprout size={48} /> };
-    if (treeCount <= 100) return { title: "Small Plantation", icon: <Leaf size={48} /> };
-    if (treeCount <= 500) return { title: "Orchard Ecosystem", icon: <Trees size={48} /> };
-    return { title: "Native Forest", icon: <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ repeat: Infinity, duration: 4 }}><Trees size={64} /></motion.div> };
-  };
-  const forestStage = getForestStage();
-
-  const handleSliderChange = (e) => {
-    setTreeCount(parseInt(e.target.value));
+  const handleTreeCountChange = (val) => {
+    const num = parseInt(val) || 0;
+    if (num > 1000) setTreeCount(1000);
+    else if (num < 1) setTreeCount(1);
+    else setTreeCount(num);
   };
 
-  const handleInputChange = (e) => {
-    let val = parseInt(e.target.value) || 0;
-    if (val > 1000) val = 1000;
-    if (val < 1) val = 1;
-    setTreeCount(val);
-  };
-
-  // Pie Chart calculations
-  const radius = 70;
+  // Circular Ring Variables
+  const radius = 60;
   const circumference = 2 * Math.PI * radius;
-  const investorDash = (70 / 100) * circumference;
-  const omwanDash = (30 / 100) * circumference;
+  const investorDash = circumference * 0.7;
+  const omWanDash = circumference * 0.3;
 
   return (
     <section id="calculator" className="section-padding bg-gray" style={{ position: 'relative', overflow: 'hidden' }}>
-      
-      {/* Background Animated Elements */}
-      <div className="calc-bg-elements">
-        <div className="calc-blob blob-1"></div>
-        <div className="calc-blob blob-2"></div>
+      {/* Subtle Background Elements */}
+      <div className="bg-blob blob-1"></div>
+      <div className="bg-blob blob-2"></div>
+
+      <div style={{ textAlign: 'center', marginBottom: '4rem', position: 'relative', zIndex: 10 }}>
+        <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Investment Calculator</h2>
+        <p style={{ maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem' }}>
+          Discover your potential returns and environmental impact.
+        </p>
       </div>
 
-      <div className="calculator-container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <div className="calc-container">
         
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem', position: 'relative', zIndex: 2 }}>
-          <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 style={{ fontSize: '3rem', color: 'var(--text-dark)', marginBottom: '1rem' }}>Tree Investment Calculator</h2>
-            <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>Visualize your financial returns and environmental impact.</p>
-          </motion.div>
-        </div>
-
-        {/* Step 1: Choose Tree */}
-        <div style={{ marginBottom: '4rem', position: 'relative', zIndex: 2 }}>
-          <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem' }}>Step 1 — Choose Your Tree</h3>
-          <div className="tree-select-grid">
-            {Object.values(treeData).map((tree, idx) => (
-              <motion.div 
-                key={tree.id}
-                className={`tree-card ${selectedTree === tree.id ? 'selected' : ''}`}
-                onClick={() => setSelectedTree(tree.id)}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                {selectedTree === tree.id && (
-                  <motion.div className="tree-card-check" initial={{ scale: 0 }} animate={{ scale: 1 }}><Check size={16} /></motion.div>
-                )}
-                <div className="tree-emoji-container">{tree.emoji}</div>
-                <h4 style={{ fontSize: '1.25rem', textAlign: 'center', marginBottom: '0.5rem' }}>{tree.name}</h4>
-                
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-light)', paddingTop: '1rem', marginTop: '1rem', fontSize: '0.9rem' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Price</span>
-                  <span style={{ fontWeight: '600' }}>₹{tree.price.toLocaleString('en-IN')}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.9rem' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Produces In</span>
-                  <span style={{ fontWeight: '600' }}>{tree.startsProducing}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.9rem' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Productive Life</span>
-                  <span style={{ fontWeight: '600' }}>{tree.productiveLife} years</span>
-                </div>
-              </motion.div>
-            ))}
+        {/* Step 1: Tree Selection */}
+        <div className="calc-step">
+          <h3 className="step-title">1. Select Your Tree</h3>
+          <div className="tree-cards-grid">
+            {Object.keys(treeData).map((key) => {
+              const tree = treeData[key];
+              const isSelected = selectedTree === key;
+              
+              return (
+                <motion.div
+                  key={key}
+                  className={`tree-card premium-card ${isSelected ? 'selected' : ''}`}
+                  onClick={() => setSelectedTree(key)}
+                  whileHover={{ y: -5, boxShadow: '0 15px 30px -5px rgba(63, 99, 65, 0.15)' }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {isSelected && (
+                    <motion.div 
+                      className="check-badge"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", bounce: 0.5 }}
+                    >
+                      <CheckCircle2 size={16} color="white" />
+                    </motion.div>
+                  )}
+                  
+                  <div className="tree-icon-wrapper" style={{ background: tree.gradient }}>
+                    <span className="tree-emoji">{tree.icon}</span>
+                  </div>
+                  
+                  <h4 className="tree-name">{tree.name}</h4>
+                  <div className="tree-cost">₹{tree.cost.toLocaleString('en-IN')}</div>
+                  
+                  <div className="tree-details">
+                    <div className="detail-row">
+                      <span>Produces in:</span>
+                      <strong>{tree.startsProducing}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Lifespan:</span>
+                      <strong>{tree.productiveLife}</strong>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Step 2: Choose Number of Trees */}
-        <div style={{ marginBottom: '4rem', position: 'relative', zIndex: 2 }}>
-          <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>Step 2 — Choose Number of Trees</h3>
-          
-          <div className="glass-panel">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-              <div>
-                <h4 style={{ fontSize: '1.2rem', color: 'var(--forest-green)' }}>{forestStage.title}</h4>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Watching your forest grow.</p>
-              </div>
-              <div style={{ color: 'var(--forest-green)' }}>
-                <AnimatePresence mode="wait">
-                  <motion.div key={forestStage.title} initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}>
-                    {forestStage.icon}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <input type="range" min="1" max="1000" value={treeCount} onChange={handleSliderChange} className="premium-slider" />
+        {/* Step 2: Quantity Slider */}
+        <div className="calc-step">
+          <h3 className="step-title">2. Number of Trees</h3>
+          <div className="premium-card slider-card">
+            <div className="slider-header">
+              <span className="slider-label">Quantity</span>
               <input 
                 type="number" 
                 min="1" max="1000" 
-                value={treeCount} 
-                onChange={handleInputChange} 
-                style={{ 
-                  width: '80px', padding: '10px', borderRadius: '8px', 
-                  border: '1px solid var(--border-light)', textAlign: 'center', 
-                  fontSize: '1.1rem', fontWeight: 'bold', outline: 'none' 
-                }} 
+                value={treeCount}
+                onChange={(e) => handleTreeCountChange(e.target.value)}
+                className="quantity-input"
               />
             </div>
+            
+            <div className="slider-wrapper">
+              <input 
+                type="range" 
+                min="1" max="1000" 
+                value={treeCount}
+                onChange={(e) => setTreeCount(parseInt(e.target.value))}
+                className="premium-slider"
+                style={{ 
+                  background: `linear-gradient(to right, var(--forest-green) ${(treeCount / 1000) * 100}%, var(--border-light) ${(treeCount / 1000) * 100}%)` 
+                }}
+              />
+            </div>
+            
+            <div className="slider-markers">
+              <span>1</span>
+              <span>1,000 max</span>
+            </div>
           </div>
         </div>
 
-        {/* Step 3: Live Results */}
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem' }}>Step 3 — Live Results</h3>
+        {/* Step 3: Results Section */}
+        <div className="calc-step results-section">
+          <h3 className="step-title">3. Your Investment Returns</h3>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div className="results-grid">
             
-            {/* Financial Details */}
-            <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Investment</p>
-                <h4 style={{ fontSize: '2rem', color: 'var(--text-dark)' }}>₹<AnimatedCounter value={totalInvestment} /></h4>
+            {/* Wealth Card (Featured) */}
+            <div className="premium-card wealth-card">
+              <div className="wealth-glow"></div>
+              <span className="result-label">Estimated Lifetime Wealth</span>
+              <div className="wealth-amount">
+                <AnimatedNum value={lifetimeWealth} prefix="₹" />
               </div>
-              <hr style={{ border: 'none', borderTop: '1px solid var(--border-light)' }} />
-              <div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Est. Annual Income (Your 70%)</p>
-                <h4 style={{ fontSize: '1.8rem', color: 'var(--forest-green)' }}>₹<AnimatedCounter value={investorAnnual} /></h4>
-              </div>
-              <div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Om Wan Conservation (30%)</p>
-                <h4 style={{ fontSize: '1.3rem', color: 'var(--accent-gold)' }}>₹<AnimatedCounter value={omwanAnnual} /></h4>
-              </div>
+              <p className="wealth-subtext">Over {currentTree.productiveLife} of productive life</p>
             </div>
-
-            {/* Income Distribution Ring */}
-            <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Income Distribution</p>
-              
-              <div 
-                className="circular-chart"
-                onMouseEnter={() => setIsHoveringPie(true)}
-                onMouseLeave={() => setIsHoveringPie(false)}
-              >
-                <svg viewBox="0 0 160 160" width="100%" height="100%" style={{ transform: 'rotate(-90deg)' }}>
-                  <circle cx="80" cy="80" r="70" className="circle-bg" />
-                  <circle 
-                    cx="80" cy="80" r="70" 
-                    className="circle-fill-investor" 
-                    strokeDasharray={`${investorDash} ${circumference}`}
-                    style={{ filter: isHoveringPie ? 'drop-shadow(0 0 8px rgba(63,99,65,0.6))' : 'none' }}
-                  />
-                  <circle 
-                    cx="80" cy="80" r="70" 
-                    className="circle-fill-omwan" 
-                    strokeDasharray={`${omwanDash} ${circumference}`}
-                    strokeDashoffset={-investorDash}
-                  />
-                </svg>
-                <div className="chart-center-text">
-                  <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--forest-green)' }}>70%</span>
-                  <br />
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>You</span>
+            
+            {/* Secondary Metrics */}
+            <div className="metrics-grid">
+              <div className="premium-card metric-card">
+                <span className="result-label">Total Investment</span>
+                <div className="metric-value">
+                  <AnimatedNum value={totalInvestment} prefix="₹" />
                 </div>
               </div>
-
-              <div style={{ marginTop: '1.5rem', textAlign: 'center', height: '40px' }}>
-                <AnimatePresence mode="wait">
-                  {isHoveringPie ? (
-                    <motion.p key="omwan" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ fontSize: '0.85rem', color: 'var(--accent-gold)', maxWidth: '200px' }}>
-                      30% funds maintenance, biodiversity, and local communities.
-                    </motion.p>
-                  ) : (
-                    <motion.p key="investor" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ fontSize: '0.85rem', color: 'var(--forest-green)', maxWidth: '200px' }}>
-                      Hover to see Om Wan's conservation impact.
-                    </motion.p>
-                  )}
-                </AnimatePresence>
+              
+              <div className="premium-card metric-card">
+                <span className="result-label">Starts Producing In</span>
+                <div className="metric-value highlight-text">
+                  {currentTree.startsProducing}
+                </div>
               </div>
             </div>
 
-          </div>
-
-          {/* Animated Wealth Card */}
-          <motion.div 
-            className="wealth-card"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="wealth-glow"></div>
-            <Sparkles style={{ margin: '0 auto', marginBottom: '1rem', color: 'var(--accent-gold)' }} size={32} />
-            <p style={{ fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8, marginBottom: '0.5rem' }}>Estimated Lifetime Wealth</p>
-            <h1 style={{ fontSize: '4rem', color: 'white', textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
-              ₹<AnimatedCounter value={estimatedLifetimeWealth} />
-            </h1>
-            <p style={{ opacity: 0.7, marginTop: '1rem', fontSize: '0.9rem' }}>Based on {currentData.productiveLife} years of productive life after maturity.</p>
-          </motion.div>
-
-          {/* Environmental Impact */}
-          <div style={{ marginTop: '4rem' }}>
-            <h3 style={{ textAlign: 'center', fontSize: '1.5rem', marginBottom: '2rem' }}>Your Environmental Impact</h3>
-            <div className="impact-grid">
-              <div className="impact-item">
-                <Trees className="impact-icon" size={32} />
-                <h4 style={{ fontSize: '1.5rem' }}><AnimatedCounter value={treeCount} /></h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Trees Conserved</p>
-              </div>
-              <div className="impact-item">
-                <Leaf className="impact-icon" size={32} />
-                <h4 style={{ fontSize: '1.5rem' }}><AnimatedCounter value={carbonCapture} /> kg</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Carbon Captured / yr</p>
-              </div>
-              <div className="impact-item">
-                <Droplet className="impact-icon" size={32} />
-                <h4 style={{ fontSize: '1.5rem' }}><AnimatedCounter value={waterConservation} /> L</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Water Conserved / yr</p>
-              </div>
-              <div className="impact-item">
-                <Bird className="impact-icon" size={32} />
-                <h4 style={{ fontSize: '1.5rem' }}>{Math.max(1, Math.round(treeCount * 0.1))}</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Acres Restored</p>
-              </div>
-              <div className="impact-item">
-                <Users className="impact-icon" size={32} />
-                <h4 style={{ fontSize: '1.5rem' }}><AnimatedCounter value={treeCount * 2} /> hrs</h4>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Community Support</p>
+            {/* Income Split visualization */}
+            <div className="premium-card split-card">
+              <h4 className="split-title">Annual Income Distribution</h4>
+              
+              <div className="split-content">
+                {/* SVG Ring */}
+                <div className="ring-wrapper">
+                  <svg width="140" height="140" viewBox="0 0 140 140" className="income-ring">
+                    {/* Om Wan 30% */}
+                    <circle
+                      cx="70" cy="70" r={radius}
+                      fill="none" 
+                      stroke="#E5E7EB" 
+                      strokeWidth="12"
+                      strokeDasharray={`${omWanDash} ${circumference}`}
+                      strokeDashoffset={-investorDash}
+                      strokeLinecap="round"
+                      className="ring-segment omwan-segment"
+                      onMouseEnter={() => setShowTooltip(true)}
+                      onMouseLeave={() => setShowTooltip(false)}
+                    />
+                    {/* Investor 70% */}
+                    <circle
+                      cx="70" cy="70" r={radius}
+                      fill="none" 
+                      stroke="var(--forest-green)" 
+                      strokeWidth="12"
+                      strokeDasharray={`${investorDash} ${circumference}`}
+                      strokeLinecap="round"
+                      className="ring-segment investor-segment"
+                    />
+                  </svg>
+                  
+                  <AnimatePresence>
+                    {showTooltip && (
+                      <motion.div 
+                        className="ring-tooltip"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                      >
+                        Reinvested into tree care, monitoring, protection, biodiversity conservation, and community-led management.
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                
+                {/* Legend */}
+                <div className="split-legend">
+                  <div className="legend-item investor-item">
+                    <div className="legend-marker investor-marker"></div>
+                    <div className="legend-text">
+                      <span className="legend-label">Your Share (70%)</span>
+                      <span className="legend-value"><AnimatedNum value={investorAnnualIncome} prefix="₹" />/yr</span>
+                    </div>
+                  </div>
+                  
+                  <div 
+                    className="legend-item omwan-item"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                  >
+                    <div className="legend-marker omwan-marker"></div>
+                    <div className="legend-text">
+                      <span className="legend-label">Om Wan Share (30%) <Info size={14} className="info-icon" /></span>
+                      <span className="legend-value"><AnimatedNum value={omWanAnnualShare} prefix="₹" />/yr</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+            
           </div>
+        </div>
 
-          {/* Interactive Story Panel */}
+        {/* Live Summary Text */}
+        <AnimatePresence mode="wait">
           <motion.div 
-            style={{ 
-              marginTop: '4rem', 
-              padding: '2rem', 
-              background: 'rgba(63, 99, 65, 0.05)', 
-              borderRadius: '16px', 
-              borderLeft: '4px solid var(--forest-green)' 
-            }}
-            key={`${treeCount}-${selectedTree}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            key={`${selectedTree}-${treeCount}`}
+            className="live-summary"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <p style={{ fontSize: '1.2rem', lineHeight: '1.8', color: 'var(--text-dark)' }}>
-              <strong>You are investing in {treeCount} {currentData.name}s.</strong> After they become productive in {currentData.startsProducing}, your trees could generate recurring annual income while restoring biodiversity and supporting long-term conservation through Om Wan.
+            <p>
+              "You are investing in <strong>{treeCount} {currentTree.name} trees</strong> with a total investment of <strong>₹{totalInvestment.toLocaleString('en-IN')}</strong>. 
+              After the trees become productive, you could receive an estimated annual income while building long-term wealth through a living natural asset."
             </p>
           </motion.div>
+        </AnimatePresence>
 
-        </div>
       </div>
     </section>
   );
