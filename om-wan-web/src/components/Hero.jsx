@@ -129,8 +129,8 @@ export default function Hero() {
           variants={itemVariants}
           style={{ display: 'flex', gap: '1.2rem', justifyContent: 'center', flexWrap: 'wrap' }}
         >
-          <a href="#plans" className="btn-hero-primary">🌳 Own Your First Tree</a>
-          <a href="#about" className="btn-hero-secondary">🌿 See How It Works</a>
+          <a href="#plans" className="btn-hero-primary">Own Your First Tree</a>
+          <a href="#about" className="btn-hero-secondary">See How It Works</a>
         </motion.div>
       </motion.div>
     </section>
