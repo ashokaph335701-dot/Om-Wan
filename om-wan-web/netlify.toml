@@ -1,6 +1,5 @@
 # Netlify configuration for Om Wan website
 [build]
-  base = "om-wan-web"
   command = "npm install && npm run build"
   publish = "dist"
 
