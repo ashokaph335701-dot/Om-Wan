@@ -6,14 +6,18 @@ export default function Hero() {
         <div style={{ marginBottom: '1rem', color: 'var(--forest-green)', fontWeight: '700', fontSize: '1rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
           🇮🇳 India&apos;s First Green Investment Platform
         </div>
-        <h1>Restore Ecosystems.<br/>Fight Climate Change.</h1>
+        <h1 style={{ lineHeight: '1.2' }}>
+          Invest in Forests.<br/>Grow Wealth. Restore the Planet.
+        </h1>
         <p style={{ marginTop: '1.5rem', fontSize: '1.2rem', color: 'var(--text-dark)' }}>
-          Join Om Wan&apos;s revolutionary approach to native tree forests in Rajasthan. <br/>
-          We own the land, you own the trees. <strong>Grow trees and grow your investment.</strong>
+          Be part of India&apos;s first green investment platform where your investment helps restore native forests, capture carbon, protect biodiversity, and create long-term value for both you and the environment.
+        </p>
+        <p style={{ marginTop: '1.2rem', fontSize: '1.3rem', fontWeight: '700', color: 'var(--forest-green)' }}>
+          We own the land. You own the trees.
         </p>
         <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <a href="#plans" className="btn-primary">Plant Trees Now</a>
-          <a href="#about" className="btn-primary btn-secondary">Learn More</a>
+          <a href="#plans" className="btn-primary">Own Your First Tree</a>
+          <a href="#about" className="btn-primary btn-secondary">See How It Works</a>
         </div>
       </div>
     </section>
