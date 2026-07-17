@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sprout, TrendingUp, Droplet, Twitter, Users, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Sprout, TrendingUp, Droplet, Twitter, Users } from 'lucide-react';
 
 export default function Impact() {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -56,19 +56,49 @@ export default function Impact() {
     }
   ];
 
+  // Helper to draw connecting line/particles based on hovered card position
+  const getParticleFlow = () => {
+    if (!hoveredCard) return null;
+    const isLeft = hoveredCard <= 3;
+    return (
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: isLeft ? '15%' : '85%',
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: hoveredCard === 2 ? 'var(--accent-gold)' : 'var(--forest-green)',
+          zIndex: 4,
+          pointerEvents: 'none',
+          boxShadow: '0 0 15px currentColor'
+        }}
+        animate={{
+          x: isLeft ? [0, 150, 200] : [0, -150, -200],
+          y: [0, -40, -80],
+          opacity: [0, 1, 1, 0],
+          scale: [0.5, 1.5, 0.5]
+        }}
+        transition={{
+          duration: 1.2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+    );
+  };
+
   return (
     <section id="impact" className="section-padding bg-gray" style={{ position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
         
         {/* Minimal Editorial Header */}
         <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
-          <span style={{ color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '4px', fontWeight: '800', fontSize: '0.8rem' }}>
-            Ecosystem Custody
-          </span>
           <h2 style={{ fontSize: '3.2rem', fontWeight: '900', marginTop: '0.8rem', letterSpacing: '-0.03em', color: 'var(--text-dark)' }}>
             Why Om Wan Matters
           </h2>
-          <p style={{ maxWidth: '600px', margin: '1.2rem auto 0', color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: '1.6' }}>
+          <p style={{ maxWidth: '650px', margin: '1.2rem auto 0', color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: '1.6' }}>
             We replace abstract charity with physical biological assets. Your tree grows in value while permanently healing the desert.
           </p>
         </div>
@@ -173,9 +203,8 @@ export default function Impact() {
                   {hoveredCard === 3 && <motion.path d="M 0,350 Q 80,350 95,210" stroke="#3a86c8" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
 
                   {/* Right Tracers */}
-                  {hoveredCard === 4 && <motion.path d="M 320,90 Q 250,90 120,95" stroke="#e07a5f" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                  {hoveredCard === 5 && <motion.path d="M 320,220 Q 250,220 110,195" stroke="#f4a261" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                  {hoveredCard === 6 && <motion.path d="M 320,350 Q 250,350 110,150" stroke="#C29E5A" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 4 && <motion.path d="M 320,150 Q 250,150 120,95" stroke="#e07a5f" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 5 && <motion.path d="M 320,300 Q 250,300 110,195" stroke="#f4a261" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
                 </motion.svg>
               )}
             </AnimatePresence>
@@ -264,8 +293,8 @@ export default function Impact() {
             </motion.div>
           </div>
 
-          {/* Right Column (Cards) */}
-          <div className="impact-col-right">
+          {/* Right Column (Cards - Centered vertically using style flex) */}
+          <div className="impact-col-right" style={{ justifyContent: 'center', height: '100%', gap: '3rem' }}>
             {/* Card 4 */}
             <motion.div
               className="glass-card-premium"
@@ -365,92 +394,8 @@ export default function Impact() {
                 )}
               </AnimatePresence>
             </motion.div>
-
-            {/* Summary / Lasting Impacts Card */}
-            <motion.div
-              className="glass-card-premium"
-              onMouseEnter={() => setHoveredCard(6)}
-              onMouseLeave={() => setHoveredCard(null)}
-              whileHover={{ y: -4, scale: 1.01 }}
-              style={{
-                borderLeft: hoveredCard === 6 ? '4px solid var(--accent-gold)' : '1px solid rgba(63, 99, 65, 0.06)',
-                background: hoveredCard === 6 ? 'rgba(194, 158, 90, 0.05)' : 'rgba(255, 255, 255, 0.45)'
-              }}
-            >
-              <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
-                <div style={{ 
-                  color: hoveredCard === 6 ? 'var(--accent-gold)' : 'var(--forest-green)',
-                  background: hoveredCard === 6 ? 'rgba(255,255,255,0.9)' : 'rgba(35, 59, 37, 0.04)',
-                  padding: '12px',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.3s'
-                }}>
-                  <ShieldCheck size={22} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.4rem', color: 'var(--text-dark)' }}>
-                    Six Lasting Impacts
-                  </h3>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.45' }}>
-                    One tree preserves microclimates, aquifers, biodiversity, and local equity.
-                  </p>
-                </div>
-              </div>
-
-              <AnimatePresence>
-                {hoveredCard === 6 && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    style={{ marginTop: '1rem', borderTop: '1px solid rgba(35, 59, 37, 0.05)', paddingTop: '0.8rem' }}
-                  >
-                    <span className="impact-tag" style={{ background: 'rgba(194, 158, 90, 0.1)', color: 'var(--accent-gold)', margin: 0 }}>
-                      Biological Asset Confirmed &rarr;
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
           </div>
 
-        </div>
-
-        {/* Footer Flow Indicator */}
-        <div style={{ 
-          marginTop: '7rem', 
-          textAlign: 'center', 
-          borderTop: '1px solid var(--border-light)', 
-          paddingTop: '4rem' 
-        }}>
-          <h4 style={{ fontSize: '1.15rem', color: 'var(--text-dark)', textTransform: 'uppercase', letterSpacing: '2.5px', fontWeight: '800', marginBottom: '1.8rem' }}>
-            🌳 One Tree. Six Lasting Impacts.
-          </h4>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            gap: '12px', 
-            flexWrap: 'wrap',
-            color: 'var(--forest-green)',
-            fontWeight: '700',
-            fontSize: '0.98rem'
-          }}>
-            <span>🌍 Climate Action</span>
-            <ArrowRight size={14} style={{ opacity: 0.5 }} />
-            <span>💧 Water Security</span>
-            <ArrowRight size={14} style={{ opacity: 0.5 }} />
-            <span>🌳 Native Forests</span>
-            <ArrowRight size={14} style={{ opacity: 0.5 }} />
-            <span>🦜 Biodiversity</span>
-            <ArrowRight size={14} style={{ opacity: 0.5 }} />
-            <span>👨‍🌾 Community Impact</span>
-            <ArrowRight size={14} style={{ opacity: 0.5 }} />
-            <span style={{ color: 'var(--accent-gold)' }}>📈 Long-Term Value</span>
-          </div>
         </div>
 
       </div>
