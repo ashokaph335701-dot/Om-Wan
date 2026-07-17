@@ -20,7 +20,6 @@ export default function Impact() {
   const cardsLeft = [
     {
       id: 1,
-      tag: "01 / Nature",
       title: "Regenerate",
       desc: "Native forests built to thrive for generations.",
       themeColor: "#4d7a4f",
@@ -28,7 +27,6 @@ export default function Impact() {
     },
     {
       id: 2,
-      tag: "02 / Asset",
       title: "Living Value",
       desc: "An organic growing asset with long-term yield.",
       themeColor: "#C29E5A",
@@ -36,7 +34,6 @@ export default function Impact() {
     },
     {
       id: 3,
-      tag: "03 / Hydration",
       title: "Restore Water",
       desc: "Recharging desert aquifers naturally.",
       themeColor: "#3a86c8",
@@ -47,7 +44,6 @@ export default function Impact() {
   const cardsRight = [
     {
       id: 4,
-      tag: "04 / Habitat",
       title: "Biodiversity",
       desc: "Creating homes for native wildlife and pollinators.",
       themeColor: "#e07a5f",
@@ -55,7 +51,6 @@ export default function Impact() {
     },
     {
       id: 5,
-      tag: "05 / Livelihood",
       title: "Empowerment",
       desc: "Fair green employment for rural families.",
       themeColor: "#f4a261",
@@ -160,9 +155,6 @@ export default function Impact() {
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <span style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '2px', color: card.themeColor, textTransform: 'uppercase', display: 'block', marginBottom: '1rem' }}>
-                  {card.tag}
-                </span>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
@@ -304,9 +296,6 @@ export default function Impact() {
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <span style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '2px', color: card.themeColor, textTransform: 'uppercase', display: 'block', marginBottom: '1rem' }}>
-                  {card.tag}
-                </span>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
