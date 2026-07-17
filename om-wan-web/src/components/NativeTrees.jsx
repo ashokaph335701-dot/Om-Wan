@@ -11,7 +11,11 @@ export default function NativeTrees() {
     <section className="section-padding bg-gray">
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h2>Species We Plant</h2>
+        <p style={{ fontSize: '0.95rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.8rem', fontStyle: 'italic' }}>
+          * We are continuously exploring more native tree options.
+        </p>
       </div>
+      
       <div className="grid-cards">
         {trees.map((tree, i) => (
           <motion.div 
