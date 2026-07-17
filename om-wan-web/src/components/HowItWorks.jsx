@@ -24,9 +24,6 @@ export default function HowItWorks() {
     <section id="how-it-works" className="section-padding bg-gray">
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <h2>Module of Execution</h2>
-        <p style={{ maxWidth: '600px', margin: '0 auto' }}>
-          How we ensure a 100% survival rate for your trees.
-        </p>
       </div>
 
       <div className="grid-cards">
