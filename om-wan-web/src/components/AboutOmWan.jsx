@@ -219,9 +219,9 @@ export default function AboutOmWan() {
                 </defs>
 
                 {benefits.map((_, i) => {
-                  const angle = (i * 2 * Math.PI) / 7 - Math.PI / 2;
-                  const targetX = 300 + 210 * Math.cos(angle);
-                  const targetY = 300 + 210 * Math.sin(angle);
+                  const angle = (i * 2 * Math.PI) / benefits.length - Math.PI / 2;
+                  const targetX = 300 + 220 * Math.cos(angle);
+                  const targetY = 300 + 220 * Math.sin(angle);
                   const isHovered = hoveredIdx === i;
 
                   // Curves slightly curving inward
@@ -239,9 +239,11 @@ export default function AboutOmWan() {
                 })}
               </svg>
 
-              {/* Center Circular Forest Hero */}
               <div style={{
                 position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
                 width: '240px',
                 height: '240px',
                 borderRadius: '50%',
@@ -274,10 +276,9 @@ export default function AboutOmWan() {
                 }} />
               </div>
 
-              {/* Orbiting Text Capsules */}
               {benefits.map((benefit, i) => {
-                const angle = (i * 2 * Math.PI) / 7 - Math.PI / 2;
-                const radius = 230; // Orbit distance
+                const angle = (i * 2 * Math.PI) / benefits.length - Math.PI / 2;
+                const radius = 220; // Orbit distance
                 const x = radius * Math.cos(angle);
                 const y = radius * Math.sin(angle);
                 const isHovered = hoveredIdx === i;
