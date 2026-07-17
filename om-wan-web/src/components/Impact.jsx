@@ -167,29 +167,7 @@ export default function Impact() {
 
           {/* Center Column: Futuristic Bio-Digital Tree Artwork */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* Glowing lines linking active cards to the tree */}
-            <AnimatePresence>
-              {hoveredCard && (
-                <motion.svg
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  style={{
-                    position: 'absolute',
-                    top: 0, left: 0, width: '100%', height: '100%',
-                    zIndex: 2,
-                    pointerEvents: 'none'
-                  }}
-                >
-                  {hoveredCard === 1 && <motion.path d="M 0,80 Q 80,80 100,70" stroke="#4d7a4f" strokeWidth="1.5" strokeDasharray="3 3" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                  {hoveredCard === 2 && <motion.path d="M 0,220 Q 80,220 95,140" stroke="#C29E5A" strokeWidth="1.5" strokeDasharray="3 3" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                  {hoveredCard === 3 && <motion.path d="M 0,360 Q 80,360 95,185" stroke="#3a86c8" strokeWidth="1.5" strokeDasharray="3 3" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
 
-                  {hoveredCard === 4 && <motion.path d="M 320,130 Q 240,130 110,85" stroke="#e07a5f" strokeWidth="1.5" strokeDasharray="3 3" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                  {hoveredCard === 5 && <motion.path d="M 320,310 Q 240,310 105,175" stroke="#f4a261" strokeWidth="1.5" strokeDasharray="3 3" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
-                </motion.svg>
-              )}
-            </AnimatePresence>
 
             {/* Swaying 3D-shaded Tree vector */}
             <motion.div
