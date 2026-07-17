@@ -282,36 +282,40 @@ export default function AboutOmWan() {
                 const x = radius * Math.cos(angle);
                 const y = radius * Math.sin(angle);
                 const isHovered = hoveredIdx === i;
-
                 return (
-                  <motion.div
+                  <div
                     key={i}
-                    onMouseEnter={() => setHoveredIdx(i)}
-                    onMouseLeave={() => setHoveredIdx(null)}
                     style={{
                       position: 'absolute',
                       left: `calc(50% + ${x}px)`,
                       top: `calc(50% + ${y}px)`,
                       transform: 'translate(-50%, -50%)',
-                      background: isHovered ? 'rgba(77, 122, 79, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                      backdropFilter: 'blur(20px)',
-                      border: isHovered ? '1px solid var(--accent-gold)' : '1px solid rgba(255, 255, 255, 0.06)',
-                      borderRadius: '30px',
-                      padding: '10px 20px',
-                      whiteSpace: 'nowrap',
-                      fontSize: '0.85rem',
-                      fontWeight: '600',
-                      letterSpacing: '0.5px',
-                      color: isHovered ? 'var(--accent-gold)' : '#FFFFFF',
-                      cursor: 'pointer',
-                      zIndex: 5,
-                      boxShadow: isHovered ? '0 10px 25px rgba(194, 158, 90, 0.05)' : 'none',
-                      transition: 'background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s'
+                      zIndex: 5
                     }}
-                    whileHover={{ scale: 1.05 }}
                   >
-                    {benefit}
-                  </motion.div>
+                    <motion.div
+                      onMouseEnter={() => setHoveredIdx(i)}
+                      onMouseLeave={() => setHoveredIdx(null)}
+                      style={{
+                        background: isHovered ? 'rgba(77, 122, 79, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(20px)',
+                        border: isHovered ? '1px solid var(--accent-gold)' : '1px solid rgba(255, 255, 255, 0.06)',
+                        borderRadius: '30px',
+                        padding: '10px 20px',
+                        whiteSpace: 'nowrap',
+                        fontSize: '0.85rem',
+                        fontWeight: '600',
+                        letterSpacing: '0.5px',
+                        color: isHovered ? 'var(--accent-gold)' : '#FFFFFF',
+                        cursor: 'pointer',
+                        boxShadow: isHovered ? '0 10px 25px rgba(194, 158, 90, 0.05)' : 'none',
+                        transition: 'background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s'
+                      }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      {benefit}
+                    </motion.div>
+                  </div>
                 );
               })}
 
