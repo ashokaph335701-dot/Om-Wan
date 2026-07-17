@@ -1,22 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function Impact() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkScreen = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkScreen();
-    window.addEventListener('resize', checkScreen);
-    return () => window.removeEventListener('resize', checkScreen);
-  }, []);
 
   const handleMouseMove = (e) => {
-    if (isMobile) return;
+    // Disable hover-tilt coordinates tracking on touch devices
+    if (window.innerWidth <= 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -33,22 +24,19 @@ export default function Impact() {
       id: 1,
       title: "Regenerate",
       desc: "Native forests built to thrive for generations.",
-      themeColor: "#4d7a4f",
-      highlightNode: "foliage"
+      themeColor: "#4d7a4f"
     },
     {
       id: 2,
       title: "Living Value",
       desc: "An organic growing asset with long-term yield.",
-      themeColor: "#C29E5A",
-      highlightNode: "trunk"
+      themeColor: "#C29E5A"
     },
     {
       id: 3,
       title: "Restore Water",
       desc: "Recharging desert aquifers naturally.",
-      themeColor: "#3a86c8",
-      highlightNode: "roots"
+      themeColor: "#3a86c8"
     }
   ];
 
@@ -57,125 +45,18 @@ export default function Impact() {
       id: 4,
       title: "Biodiversity",
       desc: "Creating homes for native wildlife and pollinators.",
-      themeColor: "#e07a5f",
-      highlightNode: "biodiversity"
+      themeColor: "#e07a5f"
     },
     {
       id: 5,
       title: "Empowerment",
       desc: "Fair green employment for rural families.",
-      themeColor: "#f4a261",
-      highlightNode: "base"
+      themeColor: "#f4a261"
     }
   ];
 
-  // Dedicated Mobile UI layout
-  if (isMobile) {
-    return (
-      <section 
-        id="impact" 
-        style={{ 
-          background: '#0a0d0a', 
-          color: '#FFFFFF',
-          padding: '80px 20px',
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Background gradient aura */}
-        <div style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0, height: '400px',
-          background: 'radial-gradient(circle at 50% 30%, rgba(35, 59, 37, 0.25) 0%, rgba(10, 13, 10, 0) 85%)',
-          pointerEvents: 'none',
-          zIndex: 1
-        }} />
+  const windParticles = Array.from({ length: 15 });
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.02em', margin: 0, lineHeight: '1.2' }}>
-              Why Om Wan Matters
-            </h2>
-            <div style={{ width: '30px', height: '1.5px', background: 'var(--accent-gold)', margin: '1.2rem auto 0', opacity: 0.6 }} />
-          </div>
-
-          {/* Tree Graphic (Centered at the top) */}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem', height: '240px' }}>
-            <motion.div
-              style={{ width: '200px', height: '240px' }}
-              animate={{ rotate: [-0.5, 0.5, -0.5] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-                {/* Roots */}
-                <path 
-                  d="M100 185 C100 200, 80 210, 60 220 M100 185 C95 195, 110 210, 120 220 M102 185 C112 200, 128 203, 140 210" 
-                  stroke={hoveredCard === 3 ? "#3a86c8" : "rgba(255,255,255,0.15)"} 
-                  strokeWidth={hoveredCard === 3 ? 3 : 1.5} 
-                  strokeLinecap="round" 
-                />
-                {/* Soil */}
-                <path 
-                  d="M45 185 C75 182, 125 182, 155 185 L145 189 L55 189 Z" 
-                  fill={hoveredCard === 5 ? "#f4a261" : "rgba(255,255,255,0.1)"} 
-                />
-                {/* Trunk */}
-                <path 
-                  d="M96 185 V135 C96 120, 78 110, 68 90 M104 185 V145 C104 130, 122 120, 132 100 M100 135 V85" 
-                  stroke={hoveredCard === 2 ? "var(--accent-gold)" : "rgba(255,255,255,0.25)"} 
-                  strokeWidth={hoveredCard === 2 ? 3 : 1.8} 
-                  strokeLinecap="round" 
-                />
-                {/* Foliage */}
-                <g fill={hoveredCard === 1 ? "var(--forest-green)" : "rgba(77, 122, 79, 0.25)"}>
-                  <circle cx="72" cy="80" r="24" />
-                  <circle cx="128" cy="90" r="22" />
-                  <circle cx="100" cy="55" r="30" />
-                  <circle cx="96" cy="105" r="18" />
-                </g>
-                {/* Wildlife */}
-                <g stroke={hoveredCard === 4 ? "#e07a5f" : "rgba(255,255,255,0.1)"} opacity={hoveredCard === 4 ? 0.9 : 0.2}>
-                  <path d="M52 50 Q57 45, 62 50 Q67 45, 72 50" strokeWidth="1.2" fill="none" />
-                  <path d="M142 60 Q147 55, 152 60 Q157 55, 162 60" strokeWidth="1.2" fill="none" />
-                </g>
-                {/* Core Nodes */}
-                <circle cx="72" cy="80" r="2.5" fill="var(--accent-gold)" />
-                <circle cx="128" cy="90" r="2.5" fill="var(--accent-gold)" />
-                <circle cx="100" cy="55" r="3" fill="var(--accent-gold)" />
-              </svg>
-            </motion.div>
-          </div>
-
-          {/* Cards List (Stacked vertically below tree) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            {[...cardsLeft, ...cardsRight].map((card) => (
-              <motion.div
-                key={card.id}
-                onClick={() => setHoveredCard(hoveredCard === card.id ? null : card.id)}
-                style={{
-                  background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.06)' : 'rgba(255, 255, 255, 0.02)',
-                  border: hoveredCard === card.id ? `1.2px solid ${card.themeColor}` : '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '20px',
-                  padding: '1.6rem 1.4rem',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-                }}
-              >
-                <h3 style={{ fontSize: '1.3rem', fontWeight: '800', color: '#FFFFFF', marginBottom: '0.4rem' }}>
-                  {card.title}
-                </h3>
-                <p style={{ fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.65)', margin: 0, lineHeight: '1.5' }}>
-                  {card.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Desktop UI Layout
   return (
     <section 
       id="impact" 
@@ -186,11 +67,11 @@ export default function Impact() {
         overflow: 'hidden', 
         background: '#0a0d0a', 
         color: '#FFFFFF',
-        padding: '160px 5%',
+        padding: '120px 5% 100px',
         perspective: '1000px'
       }}
     >
-      {/* Cinematic Background Gradient Aura (Responsive to Mouse movement) */}
+      {/* 1. Background glow centering */}
       <div 
         style={{
           position: 'absolute',
@@ -202,7 +83,7 @@ export default function Impact() {
         }}
       />
 
-      {/* Floating Wind Particles */}
+      {/* 2. Floating Wind Particles */}
       {windParticles.map((_, i) => (
         <motion.div
           key={i}
@@ -234,11 +115,11 @@ export default function Impact() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 3 }}>
         
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '8rem' }}>
-          <h2 style={{ fontSize: '3.6rem', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.03em', lineHeight: '1.1' }}>
+        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+          <h2 style={{ fontSize: '2.8rem', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.03em', lineHeight: '1.2' }}>
             Why Om Wan Matters
           </h2>
-          <div style={{ width: '40px', height: '1.5px', background: 'var(--accent-gold)', margin: '2rem auto 0', opacity: 0.6 }} />
+          <div style={{ width: '40px', height: '1.5px', background: 'var(--accent-gold)', margin: '1.5rem auto 0', opacity: 0.6 }} />
         </div>
 
         {/* Asymmetrical Parallax Composition */}
@@ -258,19 +139,16 @@ export default function Impact() {
                 key={card.id}
                 onMouseEnter={() => setHoveredCard(card.id)}
                 onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => setHoveredCard(hoveredCard === card.id ? null : card.id)}
+                className="glass-card-premium"
                 style={{
                   background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
-                  backdropFilter: 'blur(30px)',
                   border: hoveredCard === card.id ? `1px solid ${card.themeColor}` : '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '24px',
-                  padding: '2.5rem',
-                  cursor: 'pointer',
                   transform: `translateZ(${idx * 15}px)`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
+                <h3 style={{ fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
                 <p style={{ fontSize: '0.94rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
@@ -282,14 +160,9 @@ export default function Impact() {
 
           {/* Center Column: Futuristic Bio-Digital Tree Artwork */}
           <div className="tree-column" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* Swaying 3D-shaded Tree vector */}
             <motion.div
               className="tree-center-container"
               style={{ 
-                width: '300px', 
-                height: '380px', 
-                position: 'relative', 
-                zIndex: 3,
                 transform: `translateZ(40px)`
               }}
               animate={{ rotate: [-0.5, 0.5, -0.5] }}
@@ -375,20 +248,17 @@ export default function Impact() {
                 key={card.id}
                 onMouseEnter={() => setHoveredCard(card.id)}
                 onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => setHoveredCard(hoveredCard === card.id ? null : card.id)}
                 whileHover={{ y: -4, scale: 1.01 }}
+                className="glass-card-premium"
                 style={{
                   background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
-                  backdropFilter: 'blur(30px)',
                   border: hoveredCard === card.id ? `1px solid ${card.themeColor}` : '1px solid rgba(255, 255, 255, 0.06)',
-                  borderRadius: '24px',
-                  padding: '2.5rem',
-                  cursor: 'pointer',
                   transform: `translateZ(${(idx + 1) * 20}px)`,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
+                <h3 style={{ fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
                 <p style={{ fontSize: '0.94rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
