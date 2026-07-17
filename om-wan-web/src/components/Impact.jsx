@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sprout, TrendingUp, Droplet, Twitter, Users, Globe, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Sprout, TrendingUp, Droplet, Twitter, Users, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function Impact() {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -10,28 +10,28 @@ export default function Impact() {
       id: 1,
       title: "Regenerate Nature",
       desc: "Restore degraded land with native forests built to thrive for generations.",
-      icon: <Sprout size={24} />,
+      icon: <Sprout size={22} />,
       themeColor: "#4d7a4f",
       highlightPart: "foliage",
-      indicator: "Forest growth active"
+      indicator: "Ecosystem Restoration Active"
     },
     {
       id: 2,
       title: "A Living Asset",
       desc: "Own a growing tree with long-term value—not just a one-time donation.",
-      icon: <TrendingUp size={24} />,
+      icon: <TrendingUp size={22} />,
       themeColor: "#C29E5A",
       highlightPart: "trunk",
-      indicator: "Asset value scaling"
+      indicator: "Equity Valuation Tracking"
     },
     {
       id: 3,
       title: "Restore Water",
       desc: "Native forests improve soil health and naturally support groundwater recharge.",
-      icon: <Droplet size={24} />,
+      icon: <Droplet size={22} />,
       themeColor: "#3a86c8",
       highlightPart: "roots",
-      indicator: "Aquifer recharge active"
+      indicator: "Aquifer Infiltration Active"
     }
   ];
 
@@ -40,74 +40,43 @@ export default function Impact() {
       id: 4,
       title: "Bring Biodiversity Back",
       desc: "Create habitats for birds, pollinators, and wildlife.",
-      icon: <Twitter size={24} />, // Lucide Twitter serves as clean bird outline indicator
+      icon: <Twitter size={22} />, // Lucide Twitter icon as elegant bird silhouette
       themeColor: "#e07a5f",
       highlightPart: "biodiversity",
-      indicator: "Habitat restore active"
+      indicator: "Habitat Expansion Active"
     },
     {
       id: 5,
       title: "Empower Rural Communities",
       desc: "Support local jobs, sustainable livelihoods, and ethical forest management.",
-      icon: <Users size={24} />,
+      icon: <Users size={22} />,
       themeColor: "#f4a261",
       highlightPart: "base",
-      indicator: "Sewak employment verified"
+      indicator: "Rural Sewak Employment Verified"
     }
   ];
-
-  // Helper to draw connecting line/particles based on hovered card position
-  const getParticleFlow = () => {
-    if (!hoveredCard) return null;
-    const isLeft = hoveredCard <= 3;
-    return (
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: isLeft ? '15%' : '85%',
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          background: hoveredCard === 2 ? 'var(--accent-gold)' : 'var(--forest-green)',
-          zIndex: 4,
-          pointerEvents: 'none',
-          boxShadow: '0 0 15px currentColor'
-        }}
-        animate={{
-          x: isLeft ? [0, 150, 200] : [0, -150, -200],
-          y: [0, -40, -80],
-          opacity: [0, 1, 1, 0],
-          scale: [0.5, 1.5, 0.5]
-        }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-    );
-  };
 
   return (
     <section id="impact" className="section-padding bg-gray" style={{ position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
         
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-          <span style={{ color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '3px', fontWeight: '700', fontSize: '0.85rem' }}>
-            🌍 Ecosystem Solution
+        {/* Minimal Editorial Header */}
+        <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+          <span style={{ color: 'var(--accent-gold)', textTransform: 'uppercase', letterSpacing: '4px', fontWeight: '800', fontSize: '0.8rem' }}>
+            Ecosystem Custody
           </span>
-          <h2 style={{ fontSize: '3rem', fontWeight: '900', marginTop: '0.8rem' }}>Why Om Wan Matters</h2>
-          <p style={{ maxWidth: '600px', margin: '1rem auto 0', color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-            We bridge the gap between financial prosperity and environmental regeneration.
+          <h2 style={{ fontSize: '3.2rem', fontWeight: '900', marginTop: '0.8rem', letterSpacing: '-0.03em', color: 'var(--text-dark)' }}>
+            Why Om Wan Matters
+          </h2>
+          <p style={{ maxWidth: '600px', margin: '1.2rem auto 0', color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: '1.6' }}>
+            We replace abstract charity with physical biological assets. Your tree grows in value while permanently healing the desert.
           </p>
         </div>
 
-        {/* 3-Column Layout: Left Cards | Center Tree | Right Cards */}
-        <div className="impact-grid-container">
+        {/* 3-Column Luxury Layout */}
+        <div className="impact-grid-container" style={{ gap: '3.5rem' }}>
           
-          {/* Left Column */}
+          {/* Left Column (Cards) */}
           <div className="impact-col-left">
             {cardsLeft.map((card) => (
               <motion.div
@@ -115,35 +84,36 @@ export default function Impact() {
                 className="glass-card-premium"
                 onMouseEnter={() => setHoveredCard(card.id)}
                 onMouseLeave={() => setHoveredCard(null)}
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -4, scale: 1.01 }}
                 style={{
-                  borderLeft: hoveredCard === card.id ? `4px solid ${card.themeColor}` : '1px solid rgba(63, 99, 65, 0.08)'
+                  borderLeft: hoveredCard === card.id ? `4px solid ${card.themeColor}` : '1px solid rgba(63, 99, 65, 0.06)',
+                  background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.45)'
                 }}
               >
                 <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
                   <div style={{ 
                     color: hoveredCard === card.id ? card.themeColor : 'var(--forest-green)',
-                    background: hoveredCard === card.id ? 'rgba(255,255,255,0.8)' : 'rgba(35, 59, 37, 0.04)',
-                    padding: '10px',
-                    borderRadius: '10px',
+                    background: hoveredCard === card.id ? 'rgba(255,255,255,0.9)' : 'rgba(35, 59, 37, 0.04)',
+                    padding: '12px',
+                    borderRadius: '12px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    transition: 'all 0.3s'
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    boxShadow: hoveredCard === card.id ? '0 10px 20px rgba(0,0,0,0.02)' : 'none'
                   }}>
                     {card.icon}
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-dark)' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.4rem', color: 'var(--text-dark)' }}>
                       {card.title}
                     </h3>
-                    <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' }}>
+                    <p style={{ fontSize: '0.94rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.55' }}>
                       {card.desc}
                     </p>
                   </div>
                 </div>
 
-                {/* Minimal Popup detail */}
                 <AnimatePresence>
                   {hoveredCard === card.id && (
                     <motion.div
@@ -162,122 +132,157 @@ export default function Impact() {
             ))}
           </div>
 
-          {/* Center Column: Animated SVG Khejri Tree */}
-          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '450px' }}>
-            {getParticleFlow()}
-
-            {/* Tree Container with Gentle Swaying */}
+          {/* Center Column: Futuristic Bio-Digital Khejri Tree */}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '480px' }}>
+            
+            {/* Ambient Background Aura */}
             <motion.div
-              style={{ width: '320px', height: '380px', position: 'relative', zIndex: 3 }}
-              animate={{ rotate: [-0.5, 0.5, -0.5] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                position: 'absolute',
+                width: '260px',
+                height: '260px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(194, 158, 90, 0.08) 0%, rgba(35, 59, 37, 0.03) 60%, rgba(255,255,255,0) 100%)',
+                filter: 'blur(40px)',
+                zIndex: 1
+              }}
+              animate={{
+                scale: hoveredCard ? [1, 1.15, 1] : [1, 1.05, 1],
+                opacity: hoveredCard ? [0.8, 1, 0.8] : 0.6
+              }}
+              transition={{ duration: 4, repeat: Infinity }}
+            />
+
+            {/* Glowing Tracer Particle Lines linking active cards to center tree */}
+            <AnimatePresence>
+              {hoveredCard && (
+                <motion.svg
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: 'absolute',
+                    top: 0, left: 0, width: '100%', height: '100%',
+                    zIndex: 2,
+                    pointerEvents: 'none'
+                  }}
+                >
+                  {/* Left Tracers */}
+                  {hoveredCard === 1 && <motion.path d="M 0,90 Q 70,90 85,90" stroke="#4d7a4f" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 2 && <motion.path d="M 0,220 Q 70,220 90,160" stroke="#C29E5A" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 3 && <motion.path d="M 0,350 Q 80,350 95,210" stroke="#3a86c8" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, -20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+
+                  {/* Right Tracers */}
+                  {hoveredCard === 4 && <motion.path d="M 320,90 Q 250,90 120,95" stroke="#e07a5f" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 5 && <motion.path d="M 320,220 Q 250,220 110,195" stroke="#f4a261" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                  {hoveredCard === 6 && <motion.path d="M 320,350 Q 250,350 110,150" stroke="#C29E5A" strokeWidth="1.5" strokeDasharray="4 4" fill="none" animate={{ strokeDashoffset: [0, 20] }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} />}
+                </motion.svg>
+              )}
+            </AnimatePresence>
+
+            {/* Tree Container with subtle environmental swaying */}
+            <motion.div
+              style={{ width: '300px', height: '360px', position: 'relative', zIndex: 3 }}
+              animate={{ rotate: [-0.6, 0.6, -0.6] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             >
               <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-                {/* Sunrays/Atmosphere (Highlight when card 6 is hovered - summary card) */}
-                <motion.g
-                  animate={{ opacity: hoveredCard === 6 ? 0.3 : 0.08 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <circle cx="100" cy="90" r="80" fill="url(#sunGlow)" />
-                </motion.g>
-
-                {/* Roots (Highlight when card 3 is hovered) */}
+                
+                {/* 1. Roots Network (Pulsates blue/aquatic when Card 3 is hovered) */}
                 <motion.g
                   animate={{ 
-                    stroke: hoveredCard === 3 ? "#3a86c8" : "#8d7b68",
-                    strokeWidth: hoveredCard === 3 ? 3.5 : 2.5,
-                    scale: hoveredCard === 3 ? 1.05 : 1
+                    stroke: hoveredCard === 3 ? "#3a86c8" : "rgba(35,59,37,0.35)",
+                    strokeWidth: hoveredCard === 3 ? 3 : 1.5,
                   }}
-                  style={{ transformOrigin: '100px 200px', transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
+                  transition={{ duration: 0.4 }}
                 >
-                  <path d="M100 200 C100 215, 80 220, 60 230" strokeLinecap="round" />
-                  <path d="M100 200 C95 210, 110 225, 120 235" strokeLinecap="round" />
-                  <path d="M105 200 C115 215, 130 218, 145 225" strokeLinecap="round" />
-                  <path d="M95 200 C90 212, 70 218, 80 238" strokeLinecap="round" />
+                  <path d="M100 190 C100 205, 80 215, 60 225" strokeLinecap="round" />
+                  <path d="M100 190 C95 200, 110 215, 120 225" strokeLinecap="round" />
+                  <path d="M103 190 C113 205, 128 208, 140 215" strokeLinecap="round" />
+                  <path d="M97 190 C92 202, 70 208, 78 228" strokeLinecap="round" />
                 </motion.g>
 
-                {/* Base/Ground (Highlight when card 5 is hovered) */}
+                {/* 2. Soil/Base (Glows orange when Card 5 is hovered) */}
                 <motion.path
-                  d="M30 200 C70 196, 130 196, 170 200 C175 205, 25 205, 30 200 Z"
-                  fill={hoveredCard === 5 ? "#e29e5f" : "#233B25"}
-                  animate={{ opacity: hoveredCard === 5 ? 0.95 : 0.8 }}
-                  transition={{ duration: 0.5 }}
+                  d="M40 190 C70 187, 130 187, 160 190 L150 194 L50 194 Z"
+                  fill={hoveredCard === 5 ? "#f4a261" : "rgba(35,59,37,0.2)"}
+                  animate={{ 
+                    scale: hoveredCard === 5 ? 1.03 : 1,
+                    opacity: hoveredCard === 5 ? 1 : 0.6 
+                  }}
+                  style={{ transformOrigin: '100px 190px' }}
+                  transition={{ duration: 0.4 }}
                 />
 
-                {/* Trunk (Highlight when card 2 is hovered) */}
+                {/* 3. Trunk & Branch Skeletal Structure (Traces gold when Card 2 is hovered) */}
                 <motion.path
-                  d="M93 200 L95 140 C95 130, 80 120, 70 100 L73 98 C85 118, 100 122, 102 135 L107 200 Z"
-                  fill={hoveredCard === 2 ? "var(--accent-gold)" : "#5C4033"}
-                  animate={{ scale: hoveredCard === 2 ? 1.03 : 1 }}
-                  style={{ transformOrigin: '100px 200px' }}
-                  transition={{ duration: 0.5 }}
-                />
-                <motion.path
-                  d="M104 200 L102 150 C102 135, 120 125, 130 105 L133 107 C122 127, 106 138, 108 200 Z"
-                  fill={hoveredCard === 2 ? "var(--accent-gold)" : "#4A3229"}
-                  animate={{ scale: hoveredCard === 2 ? 1.03 : 1 }}
-                  style={{ transformOrigin: '100px 200px' }}
-                  transition={{ duration: 0.5 }}
+                  d="M95 190 V140 C95 125, 75 115, 65 95 M105 190 V150 C105 135, 125 125, 135 105 M100 140 V90"
+                  stroke={hoveredCard === 2 ? "var(--accent-gold)" : "var(--forest-green)"}
+                  strokeWidth={hoveredCard === 2 ? "3.5" : "2"}
+                  strokeLinecap="round"
+                  animate={{ 
+                    stroke: hoveredCard === 2 ? "var(--accent-gold)" : "rgba(35,59,37,0.6)"
+                  }}
+                  transition={{ duration: 0.4 }}
                 />
 
-                {/* Foliage / Leaves (Highlight when card 1 is hovered) */}
+                {/* 4. Foliage Cloud Vectors (Shifts colors and scales when Card 1 is hovered) */}
                 <motion.g
                   animate={{ 
-                    fill: hoveredCard === 1 ? "var(--forest-green)" : "#4d7a4f",
-                    scale: hoveredCard === 1 ? 1.06 : 1
+                    fill: hoveredCard === 1 ? "var(--forest-green)" : "rgba(35, 59, 37, 0.45)",
+                    scale: hoveredCard === 1 ? 1.05 : 1
                   }}
                   style={{ transformOrigin: '100px 100px', transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)' }}
                 >
-                  <circle cx="70" cy="90" r="30" opacity="0.8" />
-                  <circle cx="130" cy="100" r="28" opacity="0.85" />
-                  <circle cx="100" cy="65" r="38" opacity="0.9" />
-                  <circle cx="95" cy="115" r="22" opacity="0.75" />
+                  <circle cx="70" cy="85" r="25" />
+                  <circle cx="130" cy="95" r="24" />
+                  <circle cx="100" cy="60" r="32" />
+                  <circle cx="95" cy="110" r="20" />
                 </motion.g>
 
-                {/* Biodiversity / Wildlife (Highlight when card 4 is hovered) */}
+                {/* 5. Wildlife/Birds Elements (Glows when Card 4 is hovered) */}
                 <motion.g
-                  animate={{ opacity: hoveredCard === 4 ? 1 : 0.2 }}
-                  transition={{ duration: 0.5 }}
+                  animate={{ 
+                    stroke: hoveredCard === 4 ? "#e07a5f" : "rgba(35,59,37,0.25)",
+                    opacity: hoveredCard === 4 ? 1 : 0.3
+                  }}
+                  transition={{ duration: 0.4 }}
                 >
-                  {/* Floating bird silhouettes */}
-                  <path d="M50 60 Q55 55, 60 60 Q65 55, 70 60" stroke="#FAF8F5" strokeWidth="1.5" fill="none" />
-                  <path d="M140 70 Q145 65, 150 70 Q155 65, 160 70" stroke="#FAF8F5" strokeWidth="1.5" fill="none" />
-                  <path d="M100 35 Q105 30, 110 35 Q115 30, 120 35" stroke="#FAF8F5" strokeWidth="1.5" fill="none" />
+                  <path d="M50 55 Q55 50, 60 55 Q65 50, 70 55" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                  <path d="M145 65 Q150 60, 155 65 Q160 60, 165 65" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                  <path d="M100 30 Q105 25, 110 30 Q115 25, 120 30" strokeWidth="1.5" strokeLinecap="round" fill="none" />
                 </motion.g>
 
-                <defs>
-                  <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#C29E5A" />
-                    <stop offset="100%" stopColor="#FAF8F5" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
+                {/* 6. Glowing Tech Verification Nodes (Pulsing connection points) */}
+                <motion.g>
+                  <circle cx="70" cy="85" r="3" fill="var(--accent-gold)" />
+                  <circle cx="130" cy="95" r="3" fill="var(--accent-gold)" />
+                  <circle cx="100" cy="60" r="4" fill="var(--accent-gold)" />
+                  <circle cx="95" cy="190" r="3" fill="var(--accent-gold)" />
+                </motion.g>
               </svg>
             </motion.div>
-
-            {/* Ambient indicator */}
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600', position: 'absolute', bottom: '15px' }}>
-              Interactive Khejri Tree
-            </span>
           </div>
 
-          {/* Right Column */}
+          {/* Right Column (Cards) */}
           <div className="impact-col-right">
             {/* Card 4 */}
             <motion.div
               className="glass-card-premium"
               onMouseEnter={() => setHoveredCard(4)}
               onMouseLeave={() => setHoveredCard(null)}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -4, scale: 1.01 }}
               style={{
-                borderLeft: hoveredCard === 4 ? `4px solid ${cardsRight[0].themeColor}` : '1px solid rgba(63, 99, 65, 0.08)'
+                borderLeft: hoveredCard === 4 ? `4px solid ${cardsRight[0].themeColor}` : '1px solid rgba(63, 99, 65, 0.06)',
+                background: hoveredCard === 4 ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.45)'
               }}
             >
               <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
                 <div style={{ 
                   color: hoveredCard === 4 ? cardsRight[0].themeColor : 'var(--forest-green)',
-                  background: hoveredCard === 4 ? 'rgba(255,255,255,0.8)' : 'rgba(35, 59, 37, 0.04)',
-                  padding: '10px',
-                  borderRadius: '10px',
+                  background: hoveredCard === 4 ? 'rgba(255,255,255,0.9)' : 'rgba(35, 59, 37, 0.04)',
+                  padding: '12px',
+                  borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -286,10 +291,10 @@ export default function Impact() {
                   {cardsRight[0].icon}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-dark)' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.4rem', color: 'var(--text-dark)' }}>
                     {cardsRight[0].title}
                   </h3>
-                  <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '0.94rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.55' }}>
                     {cardsRight[0].desc}
                   </p>
                 </div>
@@ -316,17 +321,18 @@ export default function Impact() {
               className="glass-card-premium"
               onMouseEnter={() => setHoveredCard(5)}
               onMouseLeave={() => setHoveredCard(null)}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -4, scale: 1.01 }}
               style={{
-                borderLeft: hoveredCard === 5 ? `4px solid ${cardsRight[1].themeColor}` : '1px solid rgba(63, 99, 65, 0.08)'
+                borderLeft: hoveredCard === 5 ? `4px solid ${cardsRight[1].themeColor}` : '1px solid rgba(63, 99, 65, 0.06)',
+                background: hoveredCard === 5 ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 255, 255, 0.45)'
               }}
             >
               <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
                 <div style={{ 
                   color: hoveredCard === 5 ? cardsRight[1].themeColor : 'var(--forest-green)',
-                  background: hoveredCard === 5 ? 'rgba(255,255,255,0.8)' : 'rgba(35, 59, 37, 0.04)',
-                  padding: '10px',
-                  borderRadius: '10px',
+                  background: hoveredCard === 5 ? 'rgba(255,255,255,0.9)' : 'rgba(35, 59, 37, 0.04)',
+                  padding: '12px',
+                  borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -335,10 +341,10 @@ export default function Impact() {
                   {cardsRight[1].icon}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-dark)' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.4rem', color: 'var(--text-dark)' }}>
                     {cardsRight[1].title}
                   </h3>
-                  <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '0.94rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.55' }}>
                     {cardsRight[1].desc}
                   </p>
                 </div>
@@ -360,36 +366,36 @@ export default function Impact() {
               </AnimatePresence>
             </motion.div>
 
-            {/* Card 6: Dynamic Summary Card */}
+            {/* Summary / Lasting Impacts Card */}
             <motion.div
               className="glass-card-premium"
               onMouseEnter={() => setHoveredCard(6)}
               onMouseLeave={() => setHoveredCard(null)}
-              whileHover={{ y: -4 }}
+              whileHover={{ y: -4, scale: 1.01 }}
               style={{
-                borderLeft: hoveredCard === 6 ? '4px solid var(--accent-gold)' : '1px solid rgba(63, 99, 65, 0.08)',
-                background: hoveredCard === 6 ? 'rgba(194, 158, 90, 0.08)' : 'rgba(255, 255, 255, 0.45)'
+                borderLeft: hoveredCard === 6 ? '4px solid var(--accent-gold)' : '1px solid rgba(63, 99, 65, 0.06)',
+                background: hoveredCard === 6 ? 'rgba(194, 158, 90, 0.05)' : 'rgba(255, 255, 255, 0.45)'
               }}
             >
               <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
                 <div style={{ 
                   color: hoveredCard === 6 ? 'var(--accent-gold)' : 'var(--forest-green)',
-                  background: hoveredCard === 6 ? 'rgba(255,255,255,0.8)' : 'rgba(35, 59, 37, 0.04)',
-                  padding: '10px',
-                  borderRadius: '10px',
+                  background: hoveredCard === 6 ? 'rgba(255,255,255,0.9)' : 'rgba(35, 59, 37, 0.04)',
+                  padding: '12px',
+                  borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   transition: 'all 0.3s'
                 }}>
-                  <ShieldCheck size={24} />
+                  <ShieldCheck size={22} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: '800', marginBottom: '0.5rem', color: 'var(--text-dark)' }}>
-                    One Tree. Six Impacts.
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.4rem', color: 'var(--text-dark)' }}>
+                    Six Lasting Impacts
                   </h3>
-                  <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.4' }}>
-                    A single planting creates a legacy asset scaling environmental value forever.
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0, lineHeight: '1.45' }}>
+                    One tree preserves microclimates, aquifers, biodiversity, and local equity.
                   </p>
                 </div>
               </div>
@@ -403,7 +409,7 @@ export default function Impact() {
                     style={{ marginTop: '1rem', borderTop: '1px solid rgba(35, 59, 37, 0.05)', paddingTop: '0.8rem' }}
                   >
                     <span className="impact-tag" style={{ background: 'rgba(194, 158, 90, 0.1)', color: 'var(--accent-gold)', margin: 0 }}>
-                      System locked verification
+                      Biological Asset Confirmed &rarr;
                     </span>
                   </motion.div>
                 )}
@@ -415,12 +421,12 @@ export default function Impact() {
 
         {/* Footer Flow Indicator */}
         <div style={{ 
-          marginTop: '6rem', 
+          marginTop: '7rem', 
           textAlign: 'center', 
           borderTop: '1px solid var(--border-light)', 
-          paddingTop: '3.5rem' 
+          paddingTop: '4rem' 
         }}>
-          <h4 style={{ fontSize: '1.1rem', color: 'var(--text-dark)', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '800', marginBottom: '1.5rem' }}>
+          <h4 style={{ fontSize: '1.15rem', color: 'var(--text-dark)', textTransform: 'uppercase', letterSpacing: '2.5px', fontWeight: '800', marginBottom: '1.8rem' }}>
             🌳 One Tree. Six Lasting Impacts.
           </h4>
           <div style={{ 
