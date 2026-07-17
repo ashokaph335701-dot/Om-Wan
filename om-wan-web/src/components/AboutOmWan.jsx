@@ -14,14 +14,14 @@ export default function AboutOmWan() {
         <div className="z-content">
           <h2>Who Are We?</h2>
           <p>
-            Om Wan is India's first organization dedicated to building native tree forests, 
-            distinguished by its unique "Om Wan owns the land, and you own the trees" approach. 
-            Starting with the vibrant landscapes of Rajasthan, we aim to rejuvenate ecosystems, 
-            combat desertification, and address biodiversity loss.
+            Om Wan is India&apos;s first native tree ownership platform, where every tree is a living investment. 
+            You own the tree, while we manage the land, lifetime care, and sustainable harvesting. 
+            As your tree matures, you earn returns from its natural by-products, while your investment helps restore 
+            biodiversity, improve soil health, recharge groundwater, and combat desertification.
           </p>
-          <div style={{ marginTop: '1.5rem' }}>
-            <a href="https://maps.app.goo.gl/FQ5ubS7BfTbn79TSA" target="_blank" rel="noreferrer" className="btn-primary btn-secondary">
-              <MapPin size={18} /> View Project Site (Bikaner)
+          <div style={{ marginTop: '2rem' }}>
+            <a href="https://maps.app.goo.gl/FQ5ubS7BfTbn79TSA" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <MapPin size={18} /> Explore Our First Forest
             </a>
           </div>
         </div>
