@@ -122,8 +122,9 @@ export default function AboutOmWan() {
                 <path d="M 0,10 Q 5,5 10,10 Q 15,5 20,10" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" fill="none" />
               </motion.svg>
             </div>
-
+          </div>
         </motion.div>
+
 
         {/* Section 2: Why Only Native Trees? (Overhaul) */}
         <div style={{ marginTop: '8rem' }}>
