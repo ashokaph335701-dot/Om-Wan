@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Sprout, TrendingUp, Droplet, Twitter, Users } from 'lucide-react';
 
 export default function Impact() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
 
   const handleMouseMove = (e) => {
+    if (isMobile) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
     const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -71,19 +83,21 @@ export default function Impact() {
         overflow: 'hidden', 
         background: '#0a0d0a', 
         color: '#FFFFFF',
-        padding: '160px 5%',
+        padding: isMobile ? '100px 5% 80px' : '160px 5%',
         perspective: '1000px'
       }}
     >
-      {/* 1. Cinematic Background Gradient Aura (Responsive to Mouse movement) */}
+      {/* 1. Cinematic Background Gradient Aura (Responsive to Mouse movement on Desktop) */}
       <div 
         style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle at ${50 + mousePos.x * 20}% ${50 + mousePos.y * 20}%, rgba(35, 59, 37, 0.15) 0%, rgba(194, 158, 90, 0.04) 40%, rgba(10, 13, 10, 0) 70%)`,
+          background: isMobile 
+            ? 'radial-gradient(circle at 50% 30%, rgba(35, 59, 37, 0.2) 0%, rgba(10, 13, 10, 0) 70%)'
+            : `radial-gradient(circle at ${50 + mousePos.x * 20}% ${50 + mousePos.y * 20}%, rgba(35, 59, 37, 0.15) 0%, rgba(194, 158, 90, 0.04) 40%, rgba(10, 13, 10, 0) 70%)`,
           pointerEvents: 'none',
           zIndex: 1,
-          transition: 'background 0.1s ease'
+          transition: 'background 0.15s ease'
         }}
       />
 
@@ -119,11 +133,11 @@ export default function Impact() {
       <div style={{ maxWidth: '1300px', margin: '0 auto', position: 'relative', zIndex: 3 }}>
         
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '8rem' }}>
-          <h2 style={{ fontSize: '3.6rem', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.03em', lineHeight: '1.1' }}>
+        <div style={{ textAlign: 'center', marginBottom: isMobile ? '4rem' : '8rem' }}>
+          <h2 style={{ fontSize: isMobile ? '2.5rem' : '3.6rem', fontWeight: '900', color: '#FFFFFF', letterSpacing: '-0.03em', lineHeight: '1.1' }}>
             Why Om Wan Matters
           </h2>
-          <div style={{ width: '40px', height: '1.5px', background: 'var(--accent-gold)', margin: '2rem auto 0', opacity: 0.6 }} />
+          <div style={{ width: '40px', height: '1.5px', background: 'var(--accent-gold)', margin: '1.5rem auto 0', opacity: 0.6 }} />
         </div>
 
         {/* Asymmetrical Parallax Composition */}
@@ -131,7 +145,7 @@ export default function Impact() {
           className="impact-grid-container" 
           style={{ 
             alignItems: 'stretch',
-            transform: `rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg)`,
+            transform: isMobile ? 'none' : `rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg)`,
             transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
@@ -141,24 +155,25 @@ export default function Impact() {
             {cardsLeft.map((card, idx) => (
               <motion.div
                 key={card.id}
-                onMouseEnter={() => setHoveredCard(card.id)}
-                onMouseLeave={() => setHoveredCard(null)}
+                onMouseEnter={() => !isMobile && setHoveredCard(card.id)}
+                onMouseLeave={() => !isMobile && setHoveredCard(null)}
+                onClick={() => setHoveredCard(hoveredCard === card.id ? null : card.id)}
                 style={{
                   background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
                   backdropFilter: 'blur(30px)',
                   border: hoveredCard === card.id ? `1px solid ${card.themeColor}` : '1px solid rgba(255, 255, 255, 0.06)',
                   borderRadius: '24px',
-                  padding: '2.5rem',
+                  padding: isMobile ? '1.8rem 1.5rem' : '2.5rem',
                   cursor: 'pointer',
-                  transform: `translateZ(${idx * 15}px)`,
+                  transform: isMobile ? 'none' : `translateZ(${idx * 15}px)`,
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
-                <p style={{ fontSize: '0.94rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
+                <p style={{ fontSize: '0.92rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
                   {card.desc}
                 </p>
               </motion.div>
@@ -166,17 +181,16 @@ export default function Impact() {
           </div>
 
           {/* Center Column: Futuristic Bio-Digital Tree Artwork */}
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-
-
+          <div className="tree-column" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* Swaying 3D-shaded Tree vector */}
             <motion.div
+              className="tree-center-container"
               style={{ 
-                width: '320px', 
-                height: '380px', 
+                width: isMobile ? '240px' : '300px', 
+                height: isMobile ? '280px' : '380px', 
                 position: 'relative', 
                 zIndex: 3,
-                transform: `translateZ(40px)`
+                transform: isMobile ? 'none' : `translateZ(40px)`
               }}
               animate={{ rotate: [-0.5, 0.5, -0.5] }}
               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -255,29 +269,30 @@ export default function Impact() {
           </div>
 
           {/* Right Column (Centered vertically for layout balance) */}
-          <div className="impact-col-right" style={{ justifyContent: 'center', gap: '3rem' }}>
+          <div className="impact-col-right" style={{ justifyContent: 'center', gap: isMobile ? '2rem' : '3rem' }}>
             {cardsRight.map((card, idx) => (
               <motion.div
                 key={card.id}
-                onMouseEnter={() => setHoveredCard(card.id)}
-                onMouseLeave={() => setHoveredCard(null)}
+                onMouseEnter={() => !isMobile && setHoveredCard(card.id)}
+                onMouseLeave={() => !isMobile && setHoveredCard(null)}
+                onClick={() => setHoveredCard(hoveredCard === card.id ? null : card.id)}
                 whileHover={{ y: -4, scale: 1.01 }}
                 style={{
                   background: hoveredCard === card.id ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
                   backdropFilter: 'blur(30px)',
                   border: hoveredCard === card.id ? `1px solid ${card.themeColor}` : '1px solid rgba(255, 255, 255, 0.06)',
                   borderRadius: '24px',
-                  padding: '2.5rem',
+                  padding: isMobile ? '1.8rem 1.5rem' : '2.5rem',
                   cursor: 'pointer',
-                  transform: `translateZ(${(idx + 1) * 20}px)`,
+                  transform: isMobile ? 'none' : `translateZ(${(idx + 1) * 20}px)`,
                   transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: hoveredCard === card.id ? `0 15px 35px ${card.themeColor}12` : 'none'
                 }}
               >
-                <h3 style={{ fontSize: '1.5rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: '900', color: '#FFFFFF', marginBottom: '0.6rem' }}>
                   {card.title}
                 </h3>
-                <p style={{ fontSize: '0.94rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
+                <p style={{ fontSize: '0.92rem', color: 'rgba(255, 255, 255, 0.55)', margin: 0, lineHeight: '1.6' }}>
                   {card.desc}
                 </p>
               </motion.div>

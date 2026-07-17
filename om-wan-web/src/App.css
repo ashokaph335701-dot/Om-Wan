@@ -477,6 +477,23 @@
   }
 }
 
+@media (max-width: 768px) {
+  .impact-grid-container {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+  }
+  .impact-col-left {
+    order: 2;
+  }
+  .tree-column {
+    order: 1;
+  }
+  .impact-col-right {
+    order: 3;
+    gap: 2rem !important;
+  }
+}
+
 .impact-col-left, .impact-col-right {
   display: flex;
   flex-direction: column;
