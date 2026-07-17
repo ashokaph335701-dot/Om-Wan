@@ -11,7 +11,7 @@ export default function NativeTrees() {
     <section className="section-padding bg-gray">
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h2>Species We Plant</h2>
-        <p style={{ fontSize: '0.95rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.8rem', fontStyle: 'italic' }}>
+        <p style={{ fontSize: '0.95rem', color: 'rgba(10, 13, 10, 0.65)', marginTop: '0.8rem', fontStyle: 'italic', fontWeight: '500' }}>
           * We are continuously exploring more native tree options.
         </p>
       </div>
