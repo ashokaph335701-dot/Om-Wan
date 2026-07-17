@@ -25,8 +25,89 @@ export default function AboutOmWan() {
             </a>
           </div>
         </div>
-        <div className="z-image">
-          <img src="/natural_farming_impact.png" alt="Natural Farming in Rajasthan" />
+        <div className="z-image" style={{ position: 'relative', overflow: 'hidden', borderRadius: '16px', height: '400px' }}>
+          {/* 1. Main forest image with slow cinematic push-in */}
+          <motion.img 
+            src="/rajasthan_native_forest.jpg" 
+            alt="Authentic native forest in Bikaner, Rajasthan" 
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            animate={{ scale: [1, 1.03, 1] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* 2. Natural Sunlight filtration overlay */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'linear-gradient(135deg, rgba(220,165,71,0.08) 0%, rgba(0,0,0,0) 60%)',
+            pointerEvents: 'none',
+            zIndex: 2
+          }} />
+
+          {/* 3. Floating Dust Particles */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 3 }}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  width: '3px',
+                  height: '3px',
+                  background: 'rgba(220, 165, 71, 0.4)',
+                  borderRadius: '50%',
+                  top: Math.random() * 80 + '%',
+                  left: Math.random() * 80 + '%',
+                }}
+                animate={{
+                  y: [0, -30, -50],
+                  x: [0, 20, 40],
+                  opacity: [0, 0.8, 0]
+                }}
+                transition={{
+                  duration: Math.random() * 5 + 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: Math.random() * 3
+                }}
+              />
+            ))}
+          </div>
+
+          {/* 4. Flying Birds in Canopy (Runs occasionally) */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 3 }}>
+            <motion.svg
+              viewBox="0 0 100 100"
+              style={{ position: 'absolute', width: '25px', height: '25px', top: '15%', left: '-10%' }}
+              animate={{
+                x: ['0vw', '110%'],
+                y: ['0px', '20px', '-10px']
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "linear",
+                delay: 2
+              }}
+            >
+              <path d="M 0,10 Q 5,5 10,10 Q 15,5 20,10" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" fill="none" />
+            </motion.svg>
+            <motion.svg
+              viewBox="0 0 100 100"
+              style={{ position: 'absolute', width: '20px', height: '20px', top: '25%', left: '-10%' }}
+              animate={{
+                x: ['0vw', '110%'],
+                y: ['20px', '0px', '10px']
+              }}
+              transition={{
+                duration: 14,
+                repeat: Infinity,
+                ease: "linear",
+                delay: 6
+              }}
+            >
+              <path d="M 0,10 Q 5,5 10,10 Q 15,5 20,10" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" fill="none" />
+            </motion.svg>
+          </div>
         </div>
       </motion.div>
 
