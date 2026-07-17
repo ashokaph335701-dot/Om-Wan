@@ -306,7 +306,7 @@ export default function AboutOmWan() {
                       cursor: 'pointer',
                       zIndex: 5,
                       boxShadow: isHovered ? '0 10px 25px rgba(194, 158, 90, 0.05)' : 'none',
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                      transition: 'background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s'
                     }}
                     whileHover={{ scale: 1.05 }}
                   >
