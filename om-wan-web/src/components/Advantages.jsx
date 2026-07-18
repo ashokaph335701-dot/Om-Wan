@@ -314,7 +314,7 @@ export default function Advantages() {
                     }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 style={{ fontSize: '0.92rem', fontWeight: '800', margin: 0, lineHeight: '1.4' }}>
+                    <h3 style={{ fontSize: '0.92rem', fontWeight: '800', margin: 0, lineHeight: '1.4', color: 'inherit' }}>
                       {adv.title}
                     </h3>
                     <AnimatePresence>
