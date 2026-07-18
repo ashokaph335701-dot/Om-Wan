@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
 const Leaf = ({ delay, duration, startX, startY, endX, rotate }) => {
   return (
     <motion.svg
@@ -44,6 +44,19 @@ const leafConfigs = [
 ];
 
 export default function Hero() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const x = (clientX / window.innerWidth - 0.5) * -12;
+      const y = (clientY / window.innerHeight - 0.5) * -12;
+      setMousePos({ x, y });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,17 +80,20 @@ export default function Hero() {
   return (
     <section className="hero-section">
       {/* Background with Zoom Effect */}
+
       <motion.div 
         className="hero-bg-container"
-        animate={{ scale: [1.02, 1.07] }}
-        transition={{ duration: 30, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        animate={{ scale: [1.03, 1.09] }}
+        transition={{ duration: 35, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
         style={{ 
-          backgroundImage: 'url("/cinematic_forest_hero.jpg")',
+          backgroundImage: 'url("/rajasthan_hero_forest.jpg")',
           position: 'absolute',
-          top: 0, left: 0, right: 0, bottom: 0,
+          top: -30, left: -30, right: -30, bottom: -30,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          zIndex: 1
+          backgroundPosition: 'center center',
+          zIndex: 1,
+          x: mousePos.x,
+          y: mousePos.y
         }}
       />
       
