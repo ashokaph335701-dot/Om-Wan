@@ -299,17 +299,22 @@ export default function Advantages() {
                       backdropFilter: 'blur(20px)',
                       border: isHovered ? '1px solid var(--accent-gold)' : '1px solid rgba(255, 255, 255, 0.06)',
                       borderRadius: '24px',
-                      padding: isHovered ? '1.2rem 1.6rem' : '0.8rem 1.4rem',
+                      padding: '1.2rem 1.4rem',
                       color: isHovered ? 'var(--accent-gold)' : '#FFFFFF',
                       cursor: 'pointer',
                       boxShadow: isHovered ? '0 10px 25px rgba(194, 158, 90, 0.05)' : 'none',
-                      maxWidth: '260px',
+                      width: '230px',
+                      minHeight: '65px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      boxSizing: 'border-box',
                       textAlign: 'center',
-                      transition: 'background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s, padding 0.3s'
+                      transition: 'background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s'
                     }}
                     whileHover={{ scale: 1.05 }}
                   >
-                    <h3 style={{ fontSize: '0.94rem', fontWeight: '800', margin: 0, whiteSpace: isHovered ? 'normal' : 'nowrap' }}>
+                    <h3 style={{ fontSize: '0.92rem', fontWeight: '800', margin: 0, lineHeight: '1.4' }}>
                       {adv.title}
                     </h3>
                     <AnimatePresence>
