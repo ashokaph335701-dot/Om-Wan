@@ -27,7 +27,7 @@ function App() {
       <footer style={{ margin: '0', padding: '4rem 5%', textAlign: 'center', backgroundColor: 'var(--text-dark)', color: 'white' }}>
         <h3 style={{ color: 'white', marginBottom: '1rem' }}>Om Wan</h3>
         <p style={{ margin: '1rem auto', maxWidth: '500px', color: '#9CA3AF' }}>
-          Join our mission to restore India's native forests in Rajasthan. Reconnect with nature.
+          Join our mission to restore India's native forests and reconnect with nature.
         </p>
         <div className="footer-links" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}>
           <a href="https://www.facebook.com/share/13vN9zrpdN/" target="_blank" rel="noreferrer">Facebook</a>
